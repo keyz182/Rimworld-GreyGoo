@@ -9,6 +9,7 @@ public static class Grey_GooDefOf
     // Remember to annotate any Defs that require a DLC as needed e.g.
     // [MayRequireBiotech]
     // public static GeneDef YourPrefix_YourGeneDefName;
-    
+
+    public static FactionDef GG_GreyGoo;
     static Grey_GooDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(Grey_GooDefOf));
 }
