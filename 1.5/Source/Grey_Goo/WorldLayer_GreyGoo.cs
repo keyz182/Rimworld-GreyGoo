@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using RimWorld.Planet;
 using UnityEngine;
@@ -29,9 +30,12 @@ public class WorldLayer_GreyGoo: WorldLayer
     {
       get
       {
-        if (lightGoo == null)
-          lightGoo = MaterialPool.MatFrom("World/GG_GooLight", ShaderDatabase.WorldOverlayTransparentLitPollution, 3511);
-        return lightGoo;
+          if (lightGoo == null)
+          {
+              lightGoo = MaterialPool.MatFrom("World/GG_GooLight", GG_Shaders.LiquidMetal, 3511);
+          }
+
+          return lightGoo;
       }
     }
 
@@ -40,9 +44,12 @@ public class WorldLayer_GreyGoo: WorldLayer
     {
       get
       {
-        if (moderateGoo == null)
-          moderateGoo = MaterialPool.MatFrom("World/GG_GooModerate", ShaderDatabase.WorldOverlayTransparentLitPollution, 3511);
-        return moderateGoo;
+          if (moderateGoo == null)
+          {
+              moderateGoo = MaterialPool.MatFrom("World/GG_GooModerate", GG_Shaders.LiquidMetal, 3511);
+          }
+
+          return moderateGoo;
       }
     }
 
@@ -51,9 +58,12 @@ public class WorldLayer_GreyGoo: WorldLayer
     {
       get
       {
-        if (extemeGoo == null)
-          extemeGoo = MaterialPool.MatFrom("World/GG_GooExtreme", ShaderDatabase.WorldOverlayTransparentLitPollution, 3511);
-        return extemeGoo;
+          if (extemeGoo == null)
+          {
+              extemeGoo = MaterialPool.MatFrom("World/GG_GooExtreme", GG_Shaders.LiquidMetal, 3511);
+          }
+
+          return extemeGoo;
       }
     }
 
@@ -180,6 +190,7 @@ public class WorldLayer_GreyGoo: WorldLayer
         {
             return null;
         }
+
         return gooLevel switch
         {
             < 0.33f => LightGoo,
