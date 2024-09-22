@@ -79,7 +79,7 @@ public class GreyGooController: IExposable
 
         for (int i = 0; i < NextTileToGooify; i++)
         {
-            ggWorldComponent.GooifyTileAt(tilesOrderedByDistance[i], 0.05f);
+            ggWorldComponent.GooifyTileAt(tilesOrderedByDistance[i], 0.01f);
         }
     }
 

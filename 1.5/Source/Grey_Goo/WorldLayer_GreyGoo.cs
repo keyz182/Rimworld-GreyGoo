@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
@@ -25,47 +26,8 @@ public class WorldLayer_GreyGoo: WorldLayer
 
     public GGWorldComponent ggWorldComponent => Find.World.GetComponent<GGWorldComponent>();
 
-    private Material lightGoo;
-    private Material LightGoo
-    {
-      get
-      {
-          if (lightGoo == null)
-          {
-              lightGoo = MaterialPool.MatFrom("World/GG_GooLight", GG_Shaders.LiquidMetal, 3511);
-          }
-
-          return lightGoo;
-      }
-    }
-
-    private Material moderateGoo;
-    private Material ModerateGoo
-    {
-      get
-      {
-          if (moderateGoo == null)
-          {
-              moderateGoo = MaterialPool.MatFrom("World/GG_GooModerate", GG_Shaders.LiquidMetal, 3511);
-          }
-
-          return moderateGoo;
-      }
-    }
-
-    private Material extemeGoo;
-    private Material ExtremeGoo
-    {
-      get
-      {
-          if (extemeGoo == null)
-          {
-              extemeGoo = MaterialPool.MatFrom("World/GG_GooExtreme", GG_Shaders.LiquidMetal, 3511);
-          }
-
-          return extemeGoo;
-      }
-    }
+    public readonly IEnumerable<int> nums = Enumerable.Repeat(1, 20).Select((tr, ti)=> tr + ti).ToList().AsReadOnly();
+    public List<Lazy<Material>> Materials => nums.Select(i => new Lazy<Material>(() => MaterialPool.MatFrom($"World/GG_Goo_{i}", GG_Shaders.LiquidMetal, 3511))).ToList();
 
     private static int GetRegionIdForTile(int tileId) => Mathf.FloorToInt(tileId / 500f);
 
@@ -191,12 +153,10 @@ public class WorldLayer_GreyGoo: WorldLayer
             return null;
         }
 
-        return gooLevel switch
-        {
-            < 0.33f => LightGoo,
-            < 0.66f => ModerateGoo,
-            _ => ExtremeGoo
-        };
+        int idx = Mathf.FloorToInt(gooLevel*20);
+        idx = Math.Max(idx-1, 0);
+
+        return Materials[idx].Value;
     }
 
     public void Notify_TileGooChanged(int tileId)

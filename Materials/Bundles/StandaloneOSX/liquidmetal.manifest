@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1039652721
+CRC: 2728973520
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c54aeca84c701a59fa42a01f17fbeeb6
+    Hash: 27700d50dabfeae05e24db25db96972b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 10a6a558690295dadb3dd990eda0821a
@@ -16,5 +16,5 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Shaders/LiquidMetal.shader
-- Assets/Shaders/Unlit_LiquidMetal.mat
+- Assets/Shaders/LiquidMetal.mat
 Dependencies: []
