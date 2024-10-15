@@ -11,9 +11,9 @@ public static class GG_Shaders
 {
     private static AssetBundle bundleInt;
     private static Dictionary<string, Shader> lookupShaders;
-    private static Dictionary<string, Material> lookupMaterials;
 
     public static readonly Shader LiquidMetal = LoadShader(Path.Combine("Assets", "Shaders", "LiquidMetal.shader"));
+    public static readonly Shader LiquidMetalSimplex = LoadShader(Path.Combine("Assets", "Shaders", "LiquidMetalSimplex.shader"));
 
     public static AssetBundle AssetBundle
     {

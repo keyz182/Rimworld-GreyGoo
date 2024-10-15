@@ -76,15 +76,13 @@ public class Grey_GooMod : Mod
 
     public static void ShaderFromAssetBundle(ShaderTypeDef __instance, ref Shader ___shaderInt)
     {
-        if (__instance is not GG_ShaderTypeDef)
+        if (__instance is GG_ShaderTypeDef)
         {
-            return;
-        }
-
-        ___shaderInt = GG_Shaders.AssetBundle.LoadAsset<Shader>(__instance.shaderPath);
-        if (___shaderInt is null)
-        {
-            Log.Error($"Failed to load Shader from path <text>\"{__instance.shaderPath}\"</text>");
+            ___shaderInt = GG_Shaders.AssetBundle.LoadAsset<Shader>(__instance.shaderPath);
+            if (___shaderInt is null)
+            {
+                Log.Error($"Failed to load Shader from path <text>\"{__instance.shaderPath}\"</text>");
+            }
         }
     }
 }

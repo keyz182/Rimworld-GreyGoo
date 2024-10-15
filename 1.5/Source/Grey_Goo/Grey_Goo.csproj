@@ -68,6 +68,10 @@
     <CompatibilityFiles Include="../../../Compatibility/**" />
 
     <ExtraFiles Include="../../../LoadFolders.xml;../../../LICENSE;../../../README.md" />
+
+    <ReleaseFiles Update="..\..\Defs\GG_Terrain.xml">
+      <Link>GreyGoo\1.5\Defs\GG_Terrain.xml</Link>
+    </ReleaseFiles>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
     <RemoveDir Condition="Exists('../../../Release')" Directories="../../../Release" />

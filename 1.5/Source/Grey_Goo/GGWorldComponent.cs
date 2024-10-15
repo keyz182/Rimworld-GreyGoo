@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -79,6 +80,37 @@ public class GGWorldComponent(World world) : WorldComponent(world)
                 greyGooController.LongTick();
             }
         }
+    }
+
+    [CanBeNull]
+    public GreyGooController ClosestController(int tile)
+    {
+        float distance = float.MaxValue;
+        GreyGooController closest = null;
+
+        foreach (GreyGooController greyGooController in controllers)
+        {
+            float dist = Find.World.grid.ApproxDistanceInTiles(Find.World.grid.tiles.IndexOf(greyGooController.tile), tile);
+
+            if (dist < distance)
+            {
+                distance = dist;
+                closest = greyGooController;
+            }
+        }
+
+        return closest;
+    }
+
+    public Direction8Way GetDirection8WayToNearestController(int tile)
+    {
+        if (controllers.Count == 0) return Direction8Way.Invalid;
+        GreyGooController closest = ClosestController(tile);
+        if(closest == null) return Direction8Way.Invalid;
+
+        int controllerIdx = Find.World.grid.tiles.IndexOf(closest.tile);
+
+        return Find.World.grid.GetDirection8WayFromTo(tile, controllerIdx);
     }
 
     public override void ExposeData()
