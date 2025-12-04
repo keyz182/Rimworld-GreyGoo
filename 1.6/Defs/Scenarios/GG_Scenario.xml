@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <ScenarioDef>
-    <defName>MSS_Goo_Scenario</defName>
+    <defName>Goo_Scenario</defName>
     <label>Grey Goo!</label>
     <description>Following a disasterous plague and an even more disasterous cure, a modifier swarm of airbourne Healer Mechanites were unleashed on the planet to fix the side effects of the plague. \n\nUnfortunately, Healer Mechanites are famous for targeting the wrong problem, and healing things slightly out of order, so it decided the ultimate cure for humanity was begin from scratch; break humanity down to its organic building blocks and begin with a fresh new world. Society has collapsed, unaltered humanity, mutants, and the Goo are at an all out war for survival.</description>
     <scenario>
@@ -17,13 +17,13 @@
           <customSummary>Start with three Afflicted.</customSummary>
           <overrideKinds>
             <li>
-              <xenotype>MSS_Goo_Mutant</xenotype>
+              <xenotype>Goo_Mutant</xenotype>
               <pawnKind>Tribesperson</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
             <li>
-              <xenotype>MSS_Goo_Mutant</xenotype>
+              <xenotype>Goo_Mutant</xenotype>
               <count>3</count>
 			        <requiredAtStart>true</requiredAtStart>
             </li>

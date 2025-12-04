@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Grey_Goo.Buildings;
+using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -318,9 +322,12 @@ public class GreyGoo_MapComponent(Map map) : MapComponent(map)
         return distance;
     }
 
+    public static Lazy<FieldInfo> _allRooms = new(()=>AccessTools.Field(typeof(RegionGrid), "allRooms"));
+    public List<Room> allRooms => (List<Room>)_allRooms.Value.GetValue(map.regionGrid);
+
     public void WealthTargetter()
     {
-        currentlyTargettedRoom = map.regionGrid.allRooms.OrderByDescending(r => r.GetStat(RoomStatDefOf.Wealth)).FirstOrDefault();
+        currentlyTargettedRoom = allRooms.OrderByDescending(r => r.GetStat(RoomStatDefOf.Wealth)).FirstOrDefault();
     }
 
     public void GooRecheck()

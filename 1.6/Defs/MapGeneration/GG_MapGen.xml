@@ -4,9 +4,9 @@
         <defName>GG_GooControllerMapGen</defName>
         <genSteps>
             <li>ElevationFertility</li>
-            <li>Caves</li>
+            <!-- <li>Caves</li> -->
             <li>Terrain</li>
-            <li>CavesTerrain</li>
+            <!-- <li>CavesTerrain</li> -->
             <li>FindPlayerStartSpot</li>
             <li>ScenParts</li>
             <li>Fog</li>

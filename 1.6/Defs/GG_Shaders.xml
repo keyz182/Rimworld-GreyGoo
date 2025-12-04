@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <ShaderTypeDef>
+        <defName>GG_LiquidMetal</defName>
+        <shaderPath>LiquidMetal</shaderPath>
+    </ShaderTypeDef>
+    <ShaderTypeDef>
+        <defName>GG_LiquidMetalSimplex</defName>
+        <shaderPath>LiquidMetalSimplex</shaderPath>
+    </ShaderTypeDef>
+<!--     
     <Grey_Goo.GG_ShaderTypeDef>
         <defName>GG_LiquidMetal</defName>
         <shaderPath>Assets/Shaders/LiquidMetal.shader</shaderPath>
@@ -8,5 +17,5 @@
     <Grey_Goo.GG_ShaderTypeDef>
         <defName>GG_LiquidMetalSimplex</defName>
         <shaderPath>Assets/Shaders/LiquidMetalSimplex.shader</shaderPath>
-    </Grey_Goo.GG_ShaderTypeDef>
+    </Grey_Goo.GG_ShaderTypeDef> -->
 </Defs>

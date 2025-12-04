@@ -8,8 +8,8 @@ public static class TerrainGridExtensions
 {
     public static float ChanceToSpreadModifier(this TerrainGrid grid, IntVec3 c)
     {
-        if (!Grey_GooDefOf.GG_Goo.reduceChanceOfPlacingOnTerrain.NullOrEmpty() &&
-            Grey_GooDefOf.GG_Goo.reduceChanceOfPlacingOnTerrain.Contains(grid.TerrainAt(c))) return 0.001f;
+        // if (!Grey_GooDefOf.GG_Goo.reduceChanceOfPlacingOnTerrain.NullOrEmpty() &&
+            // Grey_GooDefOf.GG_Goo.reduceChanceOfPlacingOnTerrain.Contains(grid.TerrainAt(c))) return 0.001f;
 
         return 1f;
     }

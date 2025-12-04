@@ -27,7 +27,7 @@ public class WorldLayer_GreyGoo: WorldDrawLayer
     public GGWorldComponent ggWorldComponent => Find.World.GetComponent<GGWorldComponent>();
 
     public readonly IEnumerable<int> nums = Enumerable.Repeat(1, 20).Select((tr, ti)=> tr + ti).ToList().AsReadOnly();
-    public List<Lazy<Material>> Materials => nums.Select(i => new Lazy<Material>(() => MaterialPool.MatFrom($"World/GG_Goo_{i}", GG_Shaders.LiquidMetal, 3511))).ToList();
+    public List<Lazy<Material>> Materials => nums.Select(i => new Lazy<Material>(() => MaterialPool.MatFrom($"World/GG_Goo_{i}", Grey_GooDefOf.GG_LiquidMetal.Shader, 3511))).ToList();
 
     private static int GetRegionIdForTile(int tileId) => Mathf.FloorToInt(tileId / 500f);
 

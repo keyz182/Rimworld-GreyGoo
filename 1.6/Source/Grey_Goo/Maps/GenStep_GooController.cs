@@ -57,7 +57,7 @@ public class GenStep_GooController : GenStep_Scatterer
         resolveParams.conditionCauser = sitePart.conditionCauser;
         BaseGen.symbolStack.Push("conditionCauserRoom", resolveParams);
         resolveParams.threatPoints = StorytellerUtility.DefaultSiteThreatPointsNow();
-        BaseGen.symbolStack.Push("MSS_GG_Shamblers", resolveParams);
+        BaseGen.symbolStack.Push("GG_Shamblers", resolveParams);
         BaseGen.Generate();
         MapGenerator.SetVar("RectOfInterest", resolveParams.rect);
     }

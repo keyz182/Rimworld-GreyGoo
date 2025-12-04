@@ -13,7 +13,7 @@ public class LordToil_GooShamblerSwarm(IntVec3 start, IntVec3 dest) : LordToil_S
     public static readonly Lazy<FieldInfo> pathInfo = new(() => AccessTools.Field(typeof(LordToil_EntitySwarm), "path"));
     public static readonly Lazy<MethodInfo> getPathInfo = new(() => AccessTools.Method(typeof(LordToil_EntitySwarm), "GetPath"));
     public static float ChanceToMerge => Grey_GooMod.settings.ChanceToMerge;
-    public static JobDef MSS_GG_Merge_Shamblers => DefDatabase<JobDef>.GetNamed("MSS_GG_Merge_Shamblers");
+    public static JobDef GG_Merge_Shamblers => DefDatabase<JobDef>.GetNamed("GG_Merge_Shamblers");
 
     public override void LordToilTick()
     {
@@ -36,18 +36,18 @@ public class LordToil_GooShamblerSwarm(IntVec3 start, IntVec3 dest) : LordToil_S
 
             Pawn ownedPawn = lord.ownedPawns[Find.TickManager.TicksGame % lord.ownedPawns.Count];
 
-            if (Find.TickManager.TicksGame % 60 == 0 && MSS_GG_Merge_Shamblers != null && !(ownedPawn.CurJob != null && ownedPawn.CurJob.def == MSS_GG_Merge_Shamblers) &&
+            if (Find.TickManager.TicksGame % 60 == 0 && GG_Merge_Shamblers != null && !(ownedPawn.CurJob != null && ownedPawn.CurJob.def == GG_Merge_Shamblers) &&
                 Rand.Chance(ChanceToMerge))
             {
-                Pawn target = lord.ownedPawns.Except(ownedPawn).Where(p => p.CurJob.def != MSS_GG_Merge_Shamblers && p.mutant.Def == ownedPawn.mutant.Def).RandomElement();
+                Pawn target = lord.ownedPawns.Except(ownedPawn).Where(p => p.CurJob.def != GG_Merge_Shamblers && p.mutant.Def == ownedPawn.mutant.Def).RandomElement();
 
                 if (target != null)
                 {
                     ownedPawn.mindState.nextMoveOrderIsWait = false;
 
-                    Job job = JobMaker.MakeJob(MSS_GG_Merge_Shamblers, ownedPawn, target);
+                    Job job = JobMaker.MakeJob(GG_Merge_Shamblers, ownedPawn, target);
 
-                    job.reportStringOverride = "MSS_GG_Shambler_Merging".Translate(ownedPawn, target);
+                    job.reportStringOverride = "GG_Shambler_Merging".Translate(ownedPawn, target);
 
                     ownedPawn.jobs.StartJob(job);
                 }

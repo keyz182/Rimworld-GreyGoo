@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Grey_Goo;
+namespace Grey_Goo.Buildings;
 
 public class Building_GooController: Building
 {

@@ -1,15 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Grey_Goo.GGTerrainDef ParentName="NaturalTerrainBase">
+
+    <DamageDef ParentName="Flame">
+        <defName>GG_Goo_Burn</defName>
+        <label>goo burn</label>
+        <workerClass>DamageWorker_AddInjury</workerClass>
+        <deathMessage>{0} has been consumed by goo.</deathMessage>
+        <hediff>GG_Goo_Burn</hediff>
+        <minDamageToFragment>1</minDamageToFragment>
+        <explosionColorCenter>(0.26, 0.51, 0.97)</explosionColorCenter>
+        <explosionColorEdge>(0.26, 0.51, 0.97)</explosionColorEdge>
+        <scaleDamageToBuildingsBasedOnFlammability>false</scaleDamageToBuildingsBasedOnFlammability>
+    </DamageDef>
+
+    <HediffDef ParentName="BurnBase">
+        <defName>GG_Goo_Burn</defName>
+        <label>goo burn</label>
+        <labelNoun>a goo burn</labelNoun>
+        <description>A goo burn.</description>
+        <comps>
+            <li Class="HediffCompProperties_GetsPermanent">
+                <permanentLabel>goo burn scar</permanentLabel>
+            </li>
+        </comps>
+        <injuryProps>
+            <destroyedLabel>Burned off</destroyedLabel>
+            <destroyedOutLabel>Burned out</destroyedOutLabel>
+        </injuryProps>
+    </HediffDef>
+
+    <ThoughtDef>
+        <defName>GG_ItsEatingMe</defName>
+        <durationDays>0.1</durationDays>
+        <stackLimit>1</stackLimit>
+        <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+        <stages>
+            <li>
+                <label>it was eating me!</label>
+                <description>I could feel goo trying to dissolve me! I could feel it eating through my skin!</description>
+                <baseMoodEffect>-16</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <TerrainDef ParentName="NaturalTerrainBase">
         <defName>GG_Goo</defName>
         <label>grey goo</label>
 
         <texturePath>World/GG_Goo_20</texturePath>
-        <texturePathFade>World/GG_Goo_5</texturePathFade>
-        <texturePathRough>World/GG_Goo_5</texturePathRough>
-        <texturePathWater>World/GG_Goo_5</texturePathWater>
 
-        <terrainShader>GG_LiquidMetalSimplex</terrainShader>
+        <customShader>GG_LiquidMetalSimplex</customShader>
 
         <renderPrecedence>340</renderPrecedence>
         <pathCost>20</pathCost>
@@ -33,5 +73,93 @@
         <fertility>0</fertility>
 
         <takeFootprints>True</takeFootprints>
-    </Grey_Goo.GGTerrainDef>
+    </TerrainDef>
+
+    <TerrainDef ParentName="NaturalTerrainBase">
+        <defName>GG_Goo_Inactive</defName>
+        <label>grey goo (inactive)</label>
+
+        <texturePath>World/GG_Goo_Deactivated</texturePath>
+        <edgeType>FadeRough</edgeType>
+
+        <renderPrecedence>340</renderPrecedence>
+        <pathCost>20</pathCost>
+
+        <statBases>
+            <Beauty>-100</Beauty>
+            <BeautyOutdoors>0</BeautyOutdoors>
+            <Cleanliness>100</Cleanliness>
+        </statBases>
+
+        <scatterType>Rocky</scatterType>
+        <affordances>
+            <li>Light</li>
+            <li>Medium</li>
+            <li>Heavy</li>
+            <li>GrowSoil</li>
+            <li>Diggable</li>
+        </affordances>
+
+        <fertility>0</fertility>
+
+        <takeFootprints>True</takeFootprints>
+    </TerrainDef>
+
+    <TerrainDef ParentName="NaturalTerrainBase">
+        <defName>GG_ReclaimedGoo</defName>
+        <label>Reclaimed Soil</label>
+        <description>Reclaim the ground from deactivated goo.</description>
+
+        <constructEffect>ConstructDirt</constructEffect>
+        <designationCategory>Floors</designationCategory>
+        <costList>
+            <Hay>150</Hay>
+            <WoodLog>150</WoodLog>
+        </costList>
+
+        <placeWorkers>
+            <li>Grey_Goo.PlaceWorker_ReclaimedGoo</li>
+        </placeWorkers>
+
+        <texturePath>Terrain/Surfaces/Soil</texturePath>
+        <pollutedTexturePath>Terrain/Surfaces/SoilPolluted</pollutedTexturePath>
+
+        <edgeType>FadeRough</edgeType>
+
+        <categoryType>Soil</categoryType>
+        <renderPrecedence>340</renderPrecedence>
+
+        <pathCost>4</pathCost>
+
+        <statBases>
+            <Beauty>-5</Beauty>
+            <BeautyOutdoors>0</BeautyOutdoors>
+            <Cleanliness>-2</Cleanliness>
+            <WorkToBuild>1600</WorkToBuild>
+        </statBases>
+        <scatterType>Rocky</scatterType>
+        <affordances>
+            <li>Light</li>
+            <li>Medium</li>
+            <li>Heavy</li>
+            <li>GrowSoil</li>
+            <li>Diggable</li>
+        </affordances>
+        <generatedFilth>Filth_Dirt</generatedFilth>
+        <fertility>0.6</fertility>
+        <takeFootprints>True</takeFootprints>
+        <tools>
+            <li>
+                <label>dirt</label>
+                <capacities>
+                    <li>KickMaterialInEyes</li>
+                </capacities>
+                <hediff>DirtInEyes</hediff>
+                <cooldownTime>1.5</cooldownTime>
+            </li>
+        </tools>
+        <tags>
+            <li>Soil</li>
+        </tags>
+    </TerrainDef>
 </Defs>

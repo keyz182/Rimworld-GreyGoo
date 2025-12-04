@@ -10,10 +10,10 @@ public static class Grey_GooDefOf
     // [MayRequireBiotech]
     // public static GeneDef YourPrefix_YourGeneDefName;
 
-    public static GG_ShaderTypeDef GG_LiquidMetal;
-    public static GG_ShaderTypeDef GG_LiquidMetalSimplex;
+    public static ShaderTypeDef GG_LiquidMetal;
+    public static ShaderTypeDef GG_LiquidMetalSimplex;
 
-    public static GGTerrainDef GG_Goo;
+    public static TerrainDef GG_Goo;
 
     public static FactionDef GG_GreyGoo;
 
@@ -27,7 +27,6 @@ public static class Grey_GooDefOf
     public static readonly ThingDef GG_ArchotechPowerNode;
     public static readonly ThingDef GG_GooWaders;
     public static readonly GameConditionDef GG_GooBoosted;
-    public static readonly ThingDef GG_Frogge;
     public static readonly ThingDef GG_Turret_EMPMiniTurret;
     public static readonly ThingDef GG_Gun_Improvised_EmpLauncher;
     public static readonly ThingDef Goo_Scarab_Database;

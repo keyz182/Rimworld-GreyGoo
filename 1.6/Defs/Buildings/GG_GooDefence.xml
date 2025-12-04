@@ -88,8 +88,8 @@
                     <li MayRequire="ushanka.biologicalwarfare">USH_Necroa</li>
                 </gooInfectedHediffs>
                 <gooEnemyXenotypes>
-                    <li>MSS_Goo_Drone</li>
-                    <li>MSS_Goo_Infected</li>
+                    <!-- <li>Goo_Drone</li> -->
+                    <!-- <li>Goo_Infected</li> -->
                 </gooEnemyXenotypes>
             </li>
             <li Class="CompProperties_DestroyAfterDelay">
@@ -179,8 +179,8 @@
                     <li MayRequire="ushanka.biologicalwarfare">USH_Necroa</li>
                 </gooInfectedHediffs>
                 <gooEnemyXenotypes>
-                    <li>MSS_Goo_Drone</li>
-                    <li>MSS_Goo_Infected</li>
+                    <li>Goo_Drone</li>
+                    <li>Goo_Infected</li>
                 </gooEnemyXenotypes>
             </li>
             <li Class="CompProperties_Power">

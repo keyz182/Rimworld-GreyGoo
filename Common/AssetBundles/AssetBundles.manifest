@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 202824315
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: greygoo_windows
+      Dependencies: {}

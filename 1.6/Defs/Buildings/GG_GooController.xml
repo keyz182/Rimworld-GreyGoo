@@ -21,7 +21,7 @@
             </damageData>
         </graphicData>
         <building>
-            <soundAmbient>SunBlocker_Ambience</soundAmbient>
+            <!-- <soundAmbient>SunBlocker_Ambience</soundAmbient> -->
         </building>
     </ThingDef>
 </Defs>

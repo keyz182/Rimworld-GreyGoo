@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 2378334056
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cbfcf1b7164b261aaa2a743438a80c0d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0df1dec30b5d061d422d3e6493d27647
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: cbfcf1b7164b261aaa2a743438a80c0d
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Data/keyz182.GreyGoo/Materials/Shield.shader
+- Assets/Data/keyz182.GreyGoo/Materials/LiquidMetalSimplex.shader
+- Assets/Data/keyz182.GreyGoo/Materials/LiquidMetal.shader
+- Assets/Data/keyz182.GreyGoo/Materials/LiquidMetalCracked.shader
+Dependencies: []

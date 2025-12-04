@@ -64,7 +64,7 @@
                     <canTargetLocations>true</canTargetLocations>
                     <canTargetBuildings>true</canTargetBuildings>
                     <canTargetPawns>false</canTargetPawns>
-                    <canTargetMutants>false</canTargetMutants>
+                    <!-- <canTargetMutants>false</> -->
                     <canTargetAnimals>false</canTargetAnimals>
                     <canTargetHumans>false</canTargetHumans>
                     <canTargetMechs>false</canTargetMechs>
@@ -72,7 +72,7 @@
             </li>
         </verbs>
         <comps>
-            <li Class="Grey_Goo.CompProperties_GooMortar">
+            <li Class="Grey_Goo.Buildings.Comps.CompProperties_GooMortar">
                 <SpitIntervalRangeTicks>5000~7500</SpitIntervalRangeTicks>
             </li>
         </comps>

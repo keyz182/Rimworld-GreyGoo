@@ -28,8 +28,8 @@ public class CompGooMortar : ThingComp, IAttackTargetSearcher, IVerbOwner
     public List<Verb> AllVerbs => VerbTracker.AllVerbs;
 
     public string MortarInspectString => TicksToNextSpit > 0
-        ? "MSS_GG_MortarSyphoningEnergy".Translate() + ": " + TicksToNextSpit.ToStringTicksToPeriod()
-        : (string) "MSS_GG_MortarReady".Translate();
+        ? "GG_MortarSyphoningEnergy".Translate() + ": " + TicksToNextSpit.ToStringTicksToPeriod()
+        : (string) "GG_MortarReady".Translate();
 
     // IAttackTargetSearcher
     public Thing Thing => parent;
@@ -51,13 +51,13 @@ public class CompGooMortar : ThingComp, IAttackTargetSearcher, IVerbOwner
         reason = "";
         if (parent.Map == null || parent.Position == IntVec3.Invalid)
         {
-            reason = "MSS_GG_MortarNotOnMap";
+            reason = "GG_MortarNotOnMap";
             return false;
         }
 
         if (GenAdj.AdjacentCellsAndInside.Select(d => parent.Position + d).Where(c => c.InBounds(parent.Map)).All(c => parent.Map.terrainGrid.TerrainAt(c) != Grey_GooDefOf.GG_Goo))
         {
-            reason = "MSS_GG_MortarNotOnGoo".Translate();
+            reason = "GG_MortarNotOnGoo".Translate();
             return false;
         }
 
@@ -142,7 +142,7 @@ public class CompGooMortar : ThingComp, IAttackTargetSearcher, IVerbOwner
         AttackVerb.TryStartCastOn((LocalTargetInfo) castTarg);
         lastSpitTick = Find.TickManager.TicksGame;
         nextSpitDelay = Props.SpitIntervalRangeTicks.RandomInRange;
-        Messages.Message("MSS_GG_MortarFiring".Translate(), (Thing) parent, MessageTypeDefOf.NegativeEvent);
+        Messages.Message("GG_MortarFiring".Translate(), (Thing) parent, MessageTypeDefOf.NegativeEvent);
     }
 
     public override void PostDrawExtraSelectionOverlays()

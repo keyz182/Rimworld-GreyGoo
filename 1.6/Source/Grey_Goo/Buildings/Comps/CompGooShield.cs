@@ -152,7 +152,7 @@ public class CompGooShield : CompProjectileInterceptor, IMapCellProtector
         StringBuilder sb = new(base.CompInspectStringExtra());
         if (sb.Length != 0)
             sb.AppendLine();
-        sb.AppendTagged("MSS_GG_CompGooShieldEnergy".Translate(currentHitPoints, HitPointsMax));
+        sb.AppendTagged("GG_CompGooShieldEnergy".Translate(currentHitPoints, HitPointsMax));
 
         return sb.ToString();
     }

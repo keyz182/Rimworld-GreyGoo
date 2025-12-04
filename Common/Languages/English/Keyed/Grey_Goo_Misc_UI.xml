@@ -6,4 +6,52 @@
     <GG_ActiveGreyGoo>Active Grey Goo Controller</GG_ActiveGreyGoo>
     <GG_ControllerStartTitle>Grey Goo Controller Detected!</GG_ControllerStartTitle>
     <GG_ControllerStartDesc>A grey goo controller was detected in {0}. It will facilitate the spread of grey goo across the planet as long as it's active.</GG_ControllerStartDesc>
+
+
+    <GG_ActiveGreyGoo>Active Grey Goo Controller</GG_ActiveGreyGoo>
+    <GG_ControllerStartTitle>Grey Goo Controller Detected!</GG_ControllerStartTitle>
+    <GG_ControllerStartDesc>A grey goo controller was detected in {0}. It will facilitate the spread of grey goo across the planet as long as it's active.</GG_ControllerStartDesc>
+
+    <GG_SettingsCategory>Grey Goo Flavour Pack</GG_SettingsCategory>
+    <GG_Setting_EnableGoo>Enable Grey Goo</GG_Setting_EnableGoo>
+    <GG_Setting_GooSpreadChance>% Chance to spread goo to a new world tile [{0}%]</GG_Setting_GooSpreadChance>
+    <GG_Setting_GooSpreadIncrement>World Map Goo % increment per tick [{0}%]</GG_Setting_GooSpreadIncrement>
+    <GG_Setting_GooDamageRange>Grey Goo Damage range {0}</GG_Setting_GooDamageRange>
+    <GG_Setting_ChanceToSpreadGooToCell>Chance to spread goo to new cell {0}</GG_Setting_ChanceToSpreadGooToCell>
+    <GG_Setting_ChanceForGooToDamage>Chance for goo to damage thing {0}</GG_Setting_ChanceForGooToDamage>
+    <GG_Setting_ChanceForGooToDamagePercent>Chance for goo to damage thing per tick {0}%</GG_Setting_ChanceForGooToDamagePercent>
+    <GG_Setting_MapGooReevaluateFrequency>Number of ticks to spread the map goo reevaluation over {0}</GG_Setting_MapGooReevaluateFrequency>
+    <GG_Setting_MapGooUpdateFrequency>Ticks to spread the goo update over {0}</GG_Setting_MapGooUpdateFrequency>
+    <GG_Settings_MaxShamblersOnMap>Cutoff for new shamblers wandering onto map {0}</GG_Settings_MaxShamblersOnMap>
+    <GG_Settings_GooMortarSpawnTickRange>Tick range for Grey Goo Mortar Spawns {0}</GG_Settings_GooMortarSpawnTickRange>
+    <GG_InfectOnGooTouch>Infect pawns on touching goo</GG_InfectOnGooTouch>
+
+    <GG_GooControllerSpawned>A new grey goo controller has formed!</GG_GooControllerSpawned>
+    <GG_TileInspectString>Goo conversion level: {0}%</GG_TileInspectString>
+
+    <GG_IncreaseGooOnePercent>Goo Spead +1%</GG_IncreaseGooOnePercent>
+    <GG_IncreaseGooTenPercent>Goo Spead +10%</GG_IncreaseGooTenPercent>
+    <GG_MaxGoo>Goo Spead +100%</GG_MaxGoo>
+    <GG_DecreaseGooOnePercent>Goo Spead -1%</GG_DecreaseGooOnePercent>
+    <GG_DecreaseGooTenPercent>Goo Spead -10%</GG_DecreaseGooTenPercent>
+    <GG_MinGoo>Goo Spead -100%</GG_MinGoo>
+
+    <GG_CreateControllerHere>Create Goo Controller here</GG_CreateControllerHere>
+
+    <GG_MustBeInactiveGoo>Terrain must be Inactive Goo</GG_MustBeInactiveGoo>
+
+    <GG_MortarSyphoningEnergy>Syphoning energy from the grey goo</GG_MortarSyphoningEnergy>
+    <GG_MortarReady>Ready to fire</GG_MortarReady>
+    <GG_MortarFiring>Grey goo mortar firing!</GG_MortarFiring>
+    <GG_MortarNotOnGoo>Grey Goo Mortar is not on a goo tile, so cannot fire</GG_MortarNotOnGoo>
+    <GG_MortarNotOnMap>Grey Goo Mortar is not on a map</GG_MortarNotOnMap>
+
+    <GG_CompGooShieldEnergy>Shield energy: {0}/{1}</GG_CompGooShieldEnergy>
+
+    <GG_AlliedWithScarab>After many discussion and debates between you and the leaders of SCARAB, they now realise you are an asset to them, not a threat. You've shown them that the grey goo they've unleashed has become a far greater existential threat than the fungus infection could ever have been.\n\nIn order to help fight back against the goo, SCARAB are sending you some higher tech equipment to help you take part in the fight!\n\nThey are giving you:\n\n{0}\n\nBe careful! If you betray or otherwise alienate SCARAB, they may cut off your access to the database!</GG_AlliedWithScarab>
+    <GG_AlliedWithScarab_Title>SCARAB Allies Calling!</GG_AlliedWithScarab_Title>
+
+    <GG_ScarabDBAccessGranted>\nSCARAB Connection Status: Active</GG_ScarabDBAccessGranted>
+    <GG_ScarabDBAccessDenied>\nSCARAB Connection Status: Denied</GG_ScarabDBAccessDenied>
+    <GG_ScarabDBAccessHacked>\nSCARAB Connection Status: Hacked</GG_ScarabDBAccessHacked>
 </LanguageData>

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_LiquidMetalCracked
+  m_Shader: {fileID: 4800000, guid: 2f4095b9c6fa94a529e63b16b512d9ef, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BGFrequency: 15
+    - _BGOctaves: 4
+    - _Frequency: 30
+    - _Gain: 0.5
+    - _Jitter: 0.35
+    - _Lacunarity: 2
+    - _Octaves: 1
+    - _Ratio: 0.7
+    m_Colors:
+    - _BG: {r: 0.19999996, g: 0.14117643, b: 0.09803919, a: 1}
+    - _Color: {r: 0.35294116, g: 0.3098039, b: 0.24313721, a: 1}
+  m_BuildTextureStacks: []
