@@ -8,7 +8,7 @@ namespace Grey_Goo;
 
 public class GG_ShaderTypeDef : ShaderTypeDef
 {
-    public static Lazy<FieldInfo> ShaderIntFI = new Lazy<FieldInfo>(() => AccessTools.Field(typeof(ShaderTypeDef), "shaderInt"));
+    public static Lazy<FieldInfo> ShaderIntFI = new(() => AccessTools.Field(typeof(ShaderTypeDef), "shaderInt"));
 
     public override void PostLoad()
     {

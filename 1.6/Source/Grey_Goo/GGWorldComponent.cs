@@ -1,0 +1,181 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
+using RimWorld;
+using RimWorld.Planet;
+using UnityEngine;
+using Verse;
+
+namespace Grey_Goo;
+
+public class GGWorldComponent(World world) : WorldComponent(world)
+{
+    public List<GreyGooController> controllers = new();
+    public bool HasAlliedWithScarab = false;
+
+    public bool HasAlreadyStarted = false;
+    public bool HasAlreadyStarted_RunEachTime = false;
+    public Dictionary<int, float> TileGooLevel = new();
+
+    public List<Tile> Tiles => Find.World.grid.Surface.Tiles;
+
+    public void Setup()
+    {
+        foreach (int idx in Enumerable.Range(0, Tiles.Count - 1).Except(TileGooLevel.Keys))
+        {
+            TileGooLevel[idx] = 0;
+        }
+    }
+
+    public bool TrySpawnController(IncidentParms parms, int locationTile = -1, bool isDebug = false)
+    {
+        if (!CanCreateNewController(isDebug))
+        {
+            return false;
+        }
+
+        if (locationTile < 0)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Tile tile = Tiles.RandomElement();
+                locationTile = Tiles.IndexOf(tile);
+                if (tile.WaterCovered) continue;
+                if (Find.World.worldObjects.AnyWorldObjectAt(locationTile)) continue;
+
+                break;
+            }
+        }
+
+        Site wo = (Site) WorldObjectMaker.MakeWorldObject(Grey_GooDefOf.GG_GooControllerWorldDef);
+        Faction fac = Find.FactionManager.FirstFactionOfDef(Grey_GooDefOf.GG_GreyGoo);
+        wo.SetFaction(fac);
+        wo.Tile = locationTile;
+        wo.customLabel = "GG_ActiveGreyGoo".Translate().Colorize(Color.red);
+        wo.AddPart(new SitePart(wo, Grey_GooDefOf.GG_GooControllerSitePart, new SitePartParams()));
+        Find.WorldObjects.Add(wo);
+
+        GreyGooController controller = new(wo);
+        controller.Setup();
+
+        controllers.Add(controller);
+
+        return true;
+    }
+
+    public override void WorldComponentTick()
+    {
+        if (!HasAlreadyStarted && Current.ProgramState == ProgramState.Playing)
+        {
+            HasAlreadyStarted = true;
+            Setup();
+        }
+
+        if (!HasAlreadyStarted_RunEachTime && Current.ProgramState == ProgramState.Playing)
+        {
+            HasAlreadyStarted_RunEachTime = true;
+
+            Find.Anomaly.SetLevel(MonolithLevelDefOf.Waking, true);
+            ResearchProjectDef researchDef = DefDatabase<ResearchProjectDef>.GetNamed("BioferriteHarvesting");
+            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
+            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("BioferriteShaping");
+            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
+            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("EntityContainment");
+            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
+            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("Electroharvester");
+            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
+        }
+
+
+        if (Find.TickManager.TicksGame % 60 == 0)
+        {
+            foreach (GreyGooController greyGooController in controllers)
+            {
+                greyGooController.Tick();
+            }
+        }
+
+        if (Find.TickManager.TicksGame % 300 == 0)
+        {
+            foreach (GreyGooController greyGooController in controllers)
+            {
+                greyGooController.LongTick();
+            }
+        }
+    }
+
+    [CanBeNull]
+    public GreyGooController ClosestController(int tile)
+    {
+        float distance = float.MaxValue;
+        GreyGooController closest = null;
+
+        foreach (GreyGooController greyGooController in controllers)
+        {
+            float dist = Find.World.grid.ApproxDistanceInTiles(Tiles.IndexOf(greyGooController.tile), tile);
+
+            if (dist < distance)
+            {
+                distance = dist;
+                closest = greyGooController;
+            }
+        }
+
+        return closest;
+    }
+
+    public Direction8Way GetDirection8WayToNearestController(int tile)
+    {
+        if (controllers.Count == 0) return Direction8Way.Invalid;
+        GreyGooController closest = ClosestController(tile);
+        if (closest == null)
+        {
+            return Direction8Way.Invalid;
+        }
+
+        int controllerIdx = Tiles.IndexOf(closest.tile);
+
+        return Find.World.grid.GetDirection8WayFromTo(tile, controllerIdx);
+    }
+
+    public override void ExposeData()
+    {
+        Scribe_Values.Look(ref HasAlliedWithScarab, "HasAlliedWithScarab");
+        Scribe_Values.Look(ref HasAlreadyStarted, "HasAlreadyStarted");
+        Scribe_Collections.Look(ref TileGooLevel, "pollutedTiles", LookMode.Value);
+        Scribe_Collections.Look(ref controllers, "controllers", LookMode.Deep);
+    }
+
+    public void GooifyTileAt(int tile, float level = 0.1f)
+    {
+        if (!TileGooLevel.ContainsKey(tile))
+            TileGooLevel[tile] = 0;
+        TileGooLevel[tile] = Mathf.Clamp01(TileGooLevel[tile] + level);
+
+        GGUtils.NotifyGooChanged(tile);
+    }
+
+    public float GetTileGooLevelAt(int tile)
+    {
+        return TileGooLevel.TryGetValue(tile, out float value) ? value : 0f;
+    }
+
+    public bool CanCreateNewController(bool isDebug = false)
+    {
+        if (isDebug) return true;
+        return controllers.Count < 3;
+    }
+
+    public virtual void Notify_ControllerDestroyed(Map map)
+    {
+        GreyGooController controller = controllers.FirstOrDefault(ggc => ggc.wo == map.Parent);
+        controllers.Remove(controller);
+
+        Find.LetterStack.ReceiveLetter(
+            string.Format("GG_ControllerDestroyTitle".Translate()),
+            string.Format("GG_ControllerDestroyDesc".Translate(), controller.wo.Label.Colorize(controller.wo.Faction.Color)),
+            LetterDefOf.ThreatBig,
+            new LookTargets(controller.wo)
+        );
+    }
+}

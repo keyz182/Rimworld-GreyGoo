@@ -22,7 +22,7 @@ public class Grey_GooMod : Mod
 #if DEBUG
         Harmony.DEBUG = true;
 #endif
-        Harmony harmony = new Harmony("keyz182.rimworld.Grey_Goo.main");
+        Harmony harmony = new("keyz182.rimworld.Grey_Goo.main");
         harmony.PatchAll();
     }
 

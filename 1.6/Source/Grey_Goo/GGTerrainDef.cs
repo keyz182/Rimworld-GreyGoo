@@ -11,6 +11,8 @@ public class GGTerrainDef: TerrainDef
     public string texturePathRough;
     public string texturePathWater;
 
+    public List<TerrainDef> reduceChanceOfPlacingOnTerrain;
+
     public ShaderTypeDef terrainShader;
 
     public string TexturePath

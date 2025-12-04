@@ -8,20 +8,20 @@ using Verse;
 
 namespace Grey_Goo;
 
-public class WorldLayer_GreyGoo: WorldLayer
+public class WorldLayer_GreyGoo: WorldDrawLayer
 {
     private const int TilesPerSubMesh = 500;
     private const float ScaleUVFactor = 0.1f;
     private static readonly Color DefaultTileColor = Color.white;
-    private static readonly Color BordersUnpollutedTileColor = new Color(1f, 1f, 1f, 0.4f);
-    private List<Vector3> verts = new List<Vector3>();
-    private Dictionary<int, List<LayerSubMesh>> subMeshesByRegion = new Dictionary<int, List<LayerSubMesh>>();
-    private Queue<int> regionsToRegenerate = new Queue<int>();
+    private static readonly Color BordersUnpollutedTileColor = new(1f, 1f, 1f, 0.4f);
+    private List<Vector3> verts = new();
+    private Dictionary<int, List<LayerSubMesh>> subMeshesByRegion = new();
+    private Queue<int> regionsToRegenerate = new();
 
-    private List<int> tmpNeighbors = new List<int>();
-    private HashSet<Vector3> tmpBordersUnpollutedVerts = new HashSet<Vector3>();
-    private List<Vector3> tmpVerts = new List<Vector3>();
-    private static List<int> tmpChangedNeighbours = new List<int>();
+    private List<PlanetTile> tmpNeighbors = new();
+    private HashSet<Vector3> tmpBordersUnpollutedVerts = new();
+    private List<Vector3> tmpVerts = new();
+    private static List<PlanetTile> tmpChangedNeighbours = new();
 
 
     public GGWorldComponent ggWorldComponent => Find.World.GetComponent<GGWorldComponent>();
@@ -46,8 +46,8 @@ public class WorldLayer_GreyGoo: WorldLayer
           if (t.material == material)
               return t;
       }
-      Mesh mesh = new Mesh();
-      LayerSubMesh materialAndRegion = new LayerSubMesh(mesh, material);
+      Mesh mesh = new();
+      LayerSubMesh materialAndRegion = new(mesh, material);
       subMeshesForRegion.Add(materialAndRegion);
       subMeshes.Add(materialAndRegion);
       return materialAndRegion;

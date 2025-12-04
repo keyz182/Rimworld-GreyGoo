@@ -14,7 +14,7 @@ public static class GGUtils
 
     public static void NotifyGooChanged(int tile)
     {
-        if (worldRender_layers.Value.GetValue(Find.World.renderer) is not List<WorldLayer> layers)
+        if (worldRender_layers.Value.GetValue(Find.World.renderer) is not List<WorldDrawLayer> layers)
         {
             return;
         }

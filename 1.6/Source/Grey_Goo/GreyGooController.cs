@@ -12,7 +12,9 @@ public class GreyGooController: IExposable
 {
     public WorldObject wo;
 
-    public int TileIdx => Find.World.grid.tiles.IndexOf(tile);
+    public List<Tile> Tiles => Find.World.grid.Surface.Tiles;
+
+    public int TileIdx => Tiles.IndexOf(tile);
     public Tile _tile;
     public Tile tile{
         get{
@@ -32,10 +34,10 @@ public class GreyGooController: IExposable
 
     public List<int> _tilesOrderedByDistance;
 
-    public List<int> tilesOrderedByDistance => _tilesOrderedByDistance ??= Find.World.grid.tiles.Where(t=>t!=tile).Where(t => !t.WaterCovered)
-                .Select(t => (t, Find.World.grid.ApproxDistanceInTiles(Find.World.grid.tiles.IndexOf(tile), Find.World.grid.tiles.IndexOf(t))))
+    public List<int> tilesOrderedByDistance => _tilesOrderedByDistance ??= Tiles.Where(t=>t!=tile).Where(t => !t.WaterCovered)
+                .Select(t => (t, Find.World.grid.ApproxDistanceInTiles(Tiles.IndexOf(tile), Tiles.IndexOf(t))))
                 .OrderBy(t => t.Item2)
-                .Select(t => Find.World.grid.tiles.IndexOf(t.Item1)).ToList();
+                .Select(t => Tiles.IndexOf(t.Item1)).ToList();
 
     public GGWorldComponent ggWorldComponent => Find.World.GetComponent<GGWorldComponent>();
 
