@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
@@ -8,8 +7,16 @@ using Verse;
 
 namespace Grey_Goo;
 
-public class GreyGooController: IExposable
+public class GreyGooController: IExposable, ILoadReferenceable
 {
+    private int _id;
+
+    public int ID
+    {
+        get => _id;
+        private set => _id = value;
+    }
+
     public WorldObject wo;
 
     public List<Tile> Tiles => Find.World.grid.Surface.Tiles;
@@ -25,11 +32,15 @@ public class GreyGooController: IExposable
         }
     }
 
-    public GreyGooController(){}
+    public GreyGooController()
+    {
+        ID = GGWorldComponent.instance.GetNextControllerID();
+    }
 
     public GreyGooController(WorldObject wo)
     {
         this.wo = wo;
+        ID = GGWorldComponent.instance.GetNextControllerID();
     }
 
     public List<int> _tilesOrderedByDistance;
@@ -88,5 +99,10 @@ public class GreyGooController: IExposable
     public void LongTick()
     {
         NextTileToGooify++;
+    }
+
+    public string GetUniqueLoadID()
+    {
+        return "GreyGooController_" + ID;
     }
 }

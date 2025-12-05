@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
@@ -10,6 +13,17 @@ namespace Grey_Goo;
 
 public class GGWorldComponent(World world) : WorldComponent(world)
 {
+    public static GGWorldComponent instance => Find.World.GetComponent<GGWorldComponent>();
+    public static Lazy<MethodInfo> GetNextID = new(()=>AccessTools.Method(typeof(UniqueIDsManager), "GetNextID"));
+    private int nextControllerId;
+    public int GetNextControllerID()
+    {
+        object[] args = { nextControllerId }; // value goes in
+        int result = (int)GetNextID.Value.Invoke(Find.UniqueIDsManager, args);
+        nextControllerId = (int)args[0];      // updated ref value comes out
+        return result;
+    }
+
     public List<GreyGooController> controllers = new();
     public bool HasAlliedWithScarab = false;
 
@@ -71,22 +85,6 @@ public class GGWorldComponent(World world) : WorldComponent(world)
             Setup();
         }
 
-        if (!HasAlreadyStarted_RunEachTime && Current.ProgramState == ProgramState.Playing)
-        {
-            HasAlreadyStarted_RunEachTime = true;
-
-            Find.Anomaly.SetLevel(MonolithLevelDefOf.Waking, true);
-            ResearchProjectDef researchDef = DefDatabase<ResearchProjectDef>.GetNamed("BioferriteHarvesting");
-            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
-            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("BioferriteShaping");
-            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
-            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("EntityContainment");
-            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
-            researchDef = DefDatabase<ResearchProjectDef>.GetNamed("Electroharvester");
-            Find.ResearchManager.FinishProject(researchDef, doCompletionLetter: false);
-        }
-
-
         if (Find.TickManager.TicksGame % 60 == 0)
         {
             foreach (GreyGooController greyGooController in controllers)
@@ -142,6 +140,7 @@ public class GGWorldComponent(World world) : WorldComponent(world)
     {
         Scribe_Values.Look(ref HasAlliedWithScarab, "HasAlliedWithScarab");
         Scribe_Values.Look(ref HasAlreadyStarted, "HasAlreadyStarted");
+        Scribe_Values.Look(ref nextControllerId, "nextControllerId");
         Scribe_Collections.Look(ref TileGooLevel, "pollutedTiles", LookMode.Value);
         Scribe_Collections.Look(ref controllers, "controllers", LookMode.Deep);
     }
