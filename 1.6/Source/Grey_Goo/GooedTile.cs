@@ -41,7 +41,7 @@ public class GooedTile: IExposable
         this.spread = spread;
     }
 
-    public void Tick(int ticks)
+    public void Tick(int ticks = 1)
     {
         if (spread >= 1f)
         {
