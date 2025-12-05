@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <GeneDef>
+        <defName>GG_GooSpreader</defName>
+        <label>grey goo spreader</label>
+        <description>Carriers of this gene have a chance to infest the ground they die on with grey goo.</description>
+        <geneClass>Grey_Goo.GooSpreaderGene</geneClass>
+        <iconPath>UI/GG_GooSpreaderGene</iconPath>
+        <displayCategory>Violence</displayCategory>
+        <marketValueFactor>1.5</marketValueFactor>
+        <symbolPack>
+            <wholeNameSymbols>
+                <li><symbol>spreader</symbol></li>
+            </wholeNameSymbols>
+        </symbolPack>
+        <modExtensions>
+            <li Class="Grey_Goo.GooSpreaderGeneModExtension">
+                <chanceToSpreadGoo>0.1</chanceToSpreadGoo>
+            </li>
+        </modExtensions>
+    </GeneDef>
+
+    <GeneDef>
+        <defName>GG_EMP_Weakness</defName>
+        <label>EMP Weakness</label>
+        <labelShortAdj>EMP Weakness</labelShortAdj>
+        <description>Carriers of this gene are have a weakness to EMP pulses.</description>
+        <iconPath>Genes/GG_EMP_Gene</iconPath>
+        <displayCategory>Violence</displayCategory>
+        <displayOrderInCategory>60</displayOrderInCategory>
+        <geneClass>Grey_Goo.Gene_EMP_Weakness</geneClass>
+    </GeneDef>
+</Defs>

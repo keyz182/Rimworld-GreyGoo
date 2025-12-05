@@ -1,79 +1,399 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>Grey_Goo</RootNamespace>
-    <AssemblyName>Grey_Goo</AssemblyName>
-    <OutputPath>../../Assemblies/</OutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <SteamModsPath>$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Optimize>false</Optimize>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>../../../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll</HintPath>
-      <HintPath>../../../../../Contents/Resources/Data/Managed/Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>../../../../../RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
-      <HintPath>../../../../../Contents/Resources/Data/Managed/UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>../../../../../RimWorldWin64_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
-      <HintPath>../../../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>../../../../../RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
-      <HintPath>../../../../../Contents/Resources/Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-      <Reference Include="UnityEngine.AssetBundleModule">
-          <HintPath>../../../../../RimWorldWin64_Data/Managed/UnityEngine.AssetBundleModule.dll</HintPath>
-      <HintPath>../../../../../Contents/Resources/Data/Managed/UnityEngine.AssetBundleModule.dll</HintPath>
-          <Private>False</Private>
-      </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Condition="Exists('../../../../../Data')" Include="../../../../../Data/**/*">
-      <Link>Attached/Rimworld/%(RecursiveDir)/%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>Grey_Goo</RootNamespace>
+        <AssemblyName>Grey_Goo</AssemblyName>
+        <OutputPath>../../Assemblies/</OutputPath>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SteamModsPath>$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <Optimize>false</Optimize>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
     <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
-  </ItemGroup>
+        <Reference Include="Assembly-CSharp">
+            <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll')">../../../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/Assembly-CSharp.dll')">../../../../../RimWorldLinux_Data/Managed/Assembly-CSharp.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/Assembly-CSharp.dll')">../../../../../Contents/Resources/Data/Managed/Assembly-CSharp.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll')">../../../../../RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/UnityEngine.CoreModule.dll')">../../../../../RimWorldLinux_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/UnityEngine.CoreModule.dll')">../../../../../Contents/Resources/Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/UnityEngine.TextRenderingModule.dll')">../../../../../RimWorldWin64_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/UnityEngine.TextRenderingModule.dll')">../../../../../RimWorldLinux_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll')">../../../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll')">../../../../../RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/UnityEngine.IMGUIModule.dll')">../../../../../RimWorldLinux_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/UnityEngine.IMGUIModule.dll')">../../../../../Contents/Resources/Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
 
-  <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6-*"/>
-  </ItemGroup>
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(SolutionDir)../../../../RimWorldWin64.exe</StartProgram>
-  </PropertyGroup>
-  <ItemGroup>
-    <ReleaseFiles Include="../../../1.*/**" Exclude="../../../1.*/Source/**" />
-    <AboutFiles Include="../../../About/**" Exclude="../../../About/*.png~"/>
-    <CommonFiles Include="../../../Common/**" />
-    <CompatibilityFiles Include="../../../Compatibility/**" />
+        <Reference Include="BigAndSmall">
+            <HintPath Condition="Exists('../../../../Mods/BigSmall_Framework/1.6/Base/Assemblies/BigAndSmall.dll')">../../../../Mods/BigSmall_Framework/1.6/Base/Assemblies/BigAndSmall.dll</HintPath>
+            <HintPath Condition="Exists('../../../../2925432336/1.6/Base/Assemblies/BigAndSmall.dll')">../../../../2925432336/1.6/Base/Assemblies/BigAndSmall.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../../../workshop/content/294100/2925432336/1.6/Base/Assemblies/BigAndSmall.dll')">../../../../../../../workshop/content/294100/2925432336/1.6/Base/Assemblies/BigAndSmall.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="BSXeno.dll">
+            <HintPath Condition="Exists('../../../../Mods/BigSmall_Framework/1.6/Base/Assemblies/BSXeno.dll')">../../../../Mods/BigSmall_Framework/1.6/Base/Assemblies/BSXeno.dll</HintPath>
+            <HintPath Condition="Exists('../../../../2925432336/1.5/Main/Assemblies/BSXeno.dll')">../../../../2925432336/1.5/Main/Assemblies/BSXeno.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../../../workshop/content/294100/2925432336/1.5/Main/Assemblies/BSXeno.dll')">../../../../../../../workshop/content/294100/2925432336/1.5/Main/Assemblies/BSXeno.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Condition="Exists('../../../../../Data')" Include="../../../../../Data/**/*">
+            <Link>Attached/Rimworld/%(RecursiveDir)/%(FileName)%(Extension)</Link>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+        <Content Include="..\..\..\modlist.xml">
+          <Link>Rimworld-GreyGoo\modlist.xml</Link>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" />
+    </ItemGroup>
 
-    <ExtraFiles Include="../../../LoadFolders.xml;../../../LICENSE;../../../README.md" />
-  </ItemGroup>
+    <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6-*" />
+    </ItemGroup>
+    <PropertyGroup>
+        <StartAction>Program</StartAction>
+        <StartProgram>$(SolutionDir)../../../../RimWorldWin64.exe</StartProgram>
+    </PropertyGroup>
+    <ItemGroup>
+        <ReleaseFiles Include="../../../1.*/**" Exclude="../../../1.*/Source/**" />
+        <AboutFiles Include="../../../About/**" Exclude="../../../About/*.png~" />
+        <CommonFiles Include="../../../Common/**" />
+        <CompatibilityFiles Include="../../../Compatibility/**" />
+
+        <ExtraFiles Include="../../../loadFolders.xml;../../../LICENSE;../../../README.md" />
+
+        <ReleaseFiles Update="..\..\Defs\XenotypeDefs\Goo_Xenotypes.xml">
+            <Link>Rimworld-GreyGoo\1.6\Defs\XenotypeDefs\Goo_Xenotypes.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\Hediffs\Goo_Hediffs_Local_Misc.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\Hediffs\Goo_Hediffs_Local_Misc.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\JobDefs\GG_Jobs_Shamblers.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\JobDefs\GG_Jobs_Shamblers.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\PawnKinds\GG_GoreBeast.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\PawnKinds\GG_GoreBeast.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\ThinkTreeDefs\GG_Shamblers.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\ThinkTreeDefs\GG_Shamblers.xml</Link>
+        </ReleaseFiles>
+
+        <CommonFiles Update="..\..\..\Common\Languages\English\Keyed\Goo_BS.xml">
+          <Link>Rimworld-GreyGoo\Common\Languages\English\Keyed\Goo_BS.xml</Link>
+        </CommonFiles>
+
+        <ReleaseFiles Update="..\..\Patches\GG_StatParts.xml">
+          <Link>Rimworld-GreyGoo\1.6\Patches\GG_StatParts.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\GeneDefs\Goo_Genes.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\GeneDefs\Goo_Genes.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Defs\Recipes\GG_Surgery.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\Recipes\GG_Surgery.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Patches\GG_ThreatsCore.xml">
+          <Link>Rimworld-GreyGoo\1.6\Patches\GG_ThreatsCore.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Patches\Goo_Shambler.xml">
+          <Link>Rimworld-GreyGoo\1.6\Patches\Goo_Shambler.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Patches\Goo_Terrain.xml">
+          <Link>Rimworld-GreyGoo\1.6\Patches\Goo_Terrain.xml</Link>
+        </ReleaseFiles>
+
+        <ReleaseFiles Update="..\..\Patches\Goo_WilderMen.xml">
+          <Link>Rimworld-GreyGoo\1.6\Patches\Goo_WilderMen.xml</Link>
+        </ReleaseFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\GameConditionDef\MSS_Goo_Anomaly_GameConditions.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\GameConditionDef\MSS_Goo_Anomaly_GameConditions.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\HediffDef\MSS_Goo_Anomaly_Hediffs.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\HediffDef\MSS_Goo_Anomaly_Hediffs.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\IncidentDef\MSS_Goo_Anomaly_Incidents.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\IncidentDef\MSS_Goo_Anomaly_Incidents.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\PawnKindDef\MSS_Goo_PawnKinds_Mutants.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\PawnKindDef\MSS_Goo_PawnKinds_Mutants.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\RaidStrategyDef\MSS_Goo_Anomaly_RaidStrategies_Misc.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\RaidStrategyDef\MSS_Goo_Anomaly_RaidStrategies_Misc.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\WeatherDef\MSS_Goo_Anomaly_Weather.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\DefInjected\WeatherDef\MSS_Goo_Anomaly_Weather.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\Keyed\MSS_Goo_Anomaly_Messages.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\Keyed\MSS_Goo_Anomaly_Messages.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\Keyed\MSS_Goo_Misc_Gameplay.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Languages\English\Keyed\MSS_Goo_Misc_Gameplay.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Fleck.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Fleck.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Incident_Silent.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Incident_Silent.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Mutants.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Patches\MSS_Goo_Mutants.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_MenuIcon.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_MenuIcon.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Bulbfreak_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleA.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleA.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleB.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleB.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleC.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Bulbfreak\Tentacles\BulbfreakTentacleC.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_MenuIcon.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_MenuIcon.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Dreadmeld\Dreadmeld_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_MenuIcon.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_MenuIcon.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Fingerspike_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Attachments\Fingerspike_TopLimb.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Fingerspike\Attachments\Fingerspike_TopLimb.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_north .png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_north .png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Dessicated_Toughspike_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_MenuIcon.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_MenuIcon.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Toughspike_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Attachments\Toughspike_Spike.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Toughspike\Attachments\Toughspike_Spike.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_MenuIcon.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_MenuIcon.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Trispike_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Side\Trispike_SideLimb_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_east.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_east.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_north.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_north.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_south.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Fleshbeast\Trispike\Attachments\Top\Trispike_TopLimb_south.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusA.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusA.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusB.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusB.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusC.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusC.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusD.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusD.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusE.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusE.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusF.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\FleshmassNucleus\FleshmassNucleusF.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbA.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbA.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbB.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbB.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbC.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbC.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbD.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\FleshWhipLimb\FleshWhipLimbD.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbA.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbA.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbB.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbB.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbC.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Anomaly\Textures\Things\Pawn\Humanlike\BodyAttachments\TentacleLimb\TentacleLimbC.png</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.RimWorld.Royalty\Patches\Grey_GooCompat_Royalty_Patch.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.RimWorld.Royalty\Patches\Grey_GooCompat_Royalty_Patch.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.Rimworld.Biotech\Languages\English\DefInjected\GeneDef\MSS_Goo_Gene_Rename.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.Rimworld.Biotech\Languages\English\DefInjected\GeneDef\MSS_Goo_Gene_Rename.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.Rimworld.Biotech\Patches\MSS_Goo_Gene_Nerf.xml">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.Rimworld.Biotech\Patches\MSS_Goo_Gene_Nerf.xml</Link>
+        </CompatibilityFiles>
+
+        <CompatibilityFiles Update="..\..\..\Compatibility\Ludeon.Rimworld.Biotech\Textures\UI\Icons\Genes\Gene_PerfectImmunity.png">
+          <Link>Rimworld-GreyGoo\Compatibility\Ludeon.Rimworld.Biotech\Textures\UI\Icons\Genes\Gene_PerfectImmunity.png</Link>
+        </CompatibilityFiles>
+
+        <ReleaseFiles Update="..\..\Defs\Buildings\GG_ArchotechPowernode.xml">
+          <Link>Rimworld-GreyGoo\1.6\Defs\Buildings\GG_ArchotechPowernode.xml</Link>
+        </ReleaseFiles>
+    </ItemGroup>
 </Project>

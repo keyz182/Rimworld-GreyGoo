@@ -25,7 +25,6 @@ public class GGWorldComponent(World world) : WorldComponent(world)
     }
 
     public List<GreyGooController> controllers = new();
-    public bool HasAlliedWithScarab = false;
 
     public bool HasAlreadyStarted = false;
     public bool HasAlreadyStarted_RunEachTime = false;
@@ -138,7 +137,6 @@ public class GGWorldComponent(World world) : WorldComponent(world)
 
     public override void ExposeData()
     {
-        Scribe_Values.Look(ref HasAlliedWithScarab, "HasAlliedWithScarab");
         Scribe_Values.Look(ref HasAlreadyStarted, "HasAlreadyStarted");
         Scribe_Values.Look(ref nextControllerId, "nextControllerId");
         Scribe_Collections.Look(ref TileGooLevel, "pollutedTiles", LookMode.Value);

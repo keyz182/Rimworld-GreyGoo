@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/HediffDef[defName="Shambler"]/comps</xpath>
+        <value>
+            <li Class="Grey_Goo.Hediffs.HediffCompProperties_GooTerrainSpread">
+                <chanceToDropGoo>0.00</chanceToDropGoo> <!-- temporarily removing, will add to drones and "special types" -->
+            </li>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/HediffDef[defName="Shambler"]/comps</xpath>
+        <value>
+            <li Class="HediffCompProperties_ReactOnDamage">
+                <damageDefIncoming>EMP</damageDefIncoming>
+                <createHediff>BrainShock</createHediff>
+            </li>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/HediffDef[defName="Shambler"]/stages/li/statOffsets</xpath>
+        <value>
+            <EMPResistance>-0.5</EMPResistance>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StorytellerDef[@Name="BaseStoryteller"]/comps</xpath>
+        <value>
+            <li Class="Grey_Goo.StorytellerCompProperties_RefiringQuest">
+                <minDaysPassed>0.1</minDaysPassed>
+                <incident MayRequire="Ludeon.RimWorld.Anomaly">GG_ShamblerSwarm</incident>
+                <allowedTargetTags>
+                    <li>Map_PlayerHome</li>
+                    <li>Map_TempIncident</li>
+                    <li>Map_Misc</li>
+                    <li>Map_RaidBeacon</li>
+                </allowedTargetTags>
+                <enableIfAnyModActive>
+                    <li>Ludeon.RimWorld.Anomaly</li>
+                </enableIfAnyModActive>
+            </li>
+        </value>
+    </Operation>
+</Patch>

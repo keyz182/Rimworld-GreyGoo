@@ -85,7 +85,6 @@
                 <reactivateEffect>BulletShieldGenerator_Reactivate</reactivateEffect>
                 <gooInfectedHediffs>
                     <li MayRequire="garethp.scariacontaminationpatch">Taggerung_SCP_GeneMutation</li>
-                    <li MayRequire="ushanka.biologicalwarfare">USH_Necroa</li>
                 </gooInfectedHediffs>
                 <gooEnemyXenotypes>
                     <!-- <li>Goo_Drone</li> -->

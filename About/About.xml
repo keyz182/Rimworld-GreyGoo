@@ -10,10 +10,38 @@
     <url>https://steamcommunity.com/id/keyz182/myworkshopfiles/?appid=294100</url>
 	<modDependencies>
         <li>
+            <packageId>ludeon.rimworld.anomaly</packageId>
+            <displayName>Anomaly</displayName>
+            <steamWorkshopUrl>steam://store/2380740</steamWorkshopUrl>
+        </li>
+        <li>
+            <packageId>ludeon.rimworld.biotech</packageId>
+            <displayName>Biotech</displayName>
+            <steamWorkshopUrl>steam://store/1826140</steamWorkshopUrl>
+        </li>
+        <li>
             <packageId>brrainz.harmony</packageId>
             <displayName>Harmony</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
             <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+        <li>
+            <packageId>oskarpotocki.vanillafactionsexpanded.core</packageId>
+            <displayName>Vanilla Expanded Framework</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
+            <downloadUrl>https://github.com/juanosarg/AlphaGenes/releases</downloadUrl>
+        </li>
+        <li>
+            <packageId>sarg.alphagenes</packageId>
+            <displayName>Alpha Genes</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2891845502</steamWorkshopUrl>
+            <downloadUrl>https://github.com/juanosarg/AlphaGenes/releases</downloadUrl>
+        </li>
+        <li>
+            <packageId>redmattis.betterprerequisites</packageId>
+            <displayName>Big and Small - Framework</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2925432336</steamWorkshopUrl>
+            <downloadUrl>https://github.com/RedMattis/BigSmall_Framework</downloadUrl>
         </li>
     </modDependencies>
 

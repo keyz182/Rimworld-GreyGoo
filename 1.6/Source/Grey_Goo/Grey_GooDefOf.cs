@@ -29,7 +29,10 @@ public static class Grey_GooDefOf
     public static readonly GameConditionDef GG_GooBoosted;
     public static readonly ThingDef GG_Turret_EMPMiniTurret;
     public static readonly ThingDef GG_Gun_Improvised_EmpLauncher;
-    public static readonly ThingDef Goo_Scarab_Database;
+
+    public static HediffDef GG_MergedShambler;
+    public static PawnKindDef GG_ShamblerGorebeast;
+    public static JobDef GG_Merge_Shamblers;
 
     static Grey_GooDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(Grey_GooDefOf));
 }
