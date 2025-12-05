@@ -22,6 +22,7 @@ public class Settings : ModSettings
     public float ChanceToMerge = 0.015f;
     public int ShamblerMergeHediffSeverityToTransform = 10;
 
+
     public void DoWindowContents(Rect wrect)
     {
         float scrollViewHeigh = 702f;

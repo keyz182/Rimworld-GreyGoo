@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace Grey_Goo;
@@ -10,24 +12,23 @@ public class GooedTile: IExposable
     public int planetLayerId;
     public GreyGooController controller;
     public float spread;
-
-    private List<PlanetTile> neighbours;
+    public bool neighboursGooed = false;
 
     public List<PlanetTile> Neighbours
     {
         get
         {
-            if (!neighbours.NullOrEmpty())
+            if (!field.NullOrEmpty())
             {
-                return neighbours;
+                return field;
             }
 
-            neighbours = [];
-            Find.WorldGrid.GetTileNeighbors(Find.WorldGrid.Surface.PlanetTileForID(tileId), neighbours);
+            field = [];
+            Find.WorldGrid.GetTileNeighbors(Find.WorldGrid.Surface.PlanetTileForID(tileId), field);
 
-            return neighbours;
+            return field;
         }
-        set => neighbours = value;
+        set;
     }
 
     public GooedTile(){}
@@ -40,11 +41,35 @@ public class GooedTile: IExposable
         this.spread = spread;
     }
 
+    public void Tick(int ticks)
+    {
+        if (spread >= 1f)
+        {
+            // Do spread
+            List<PlanetTile> neighbours = Neighbours.Where(tile => !GGWorldComponent.instance.GooedTiles.Any(gt => gt.tileId == tile.tileId)).ToList();
+            if (neighbours.Count == 0)
+            {
+                neighboursGooed = true;
+                return;
+            }
+
+            if (Rand.Chance(Grey_GooMod.settings.GooSpreadChance * ticks))
+            {
+                GGWorldComponent.instance.GooifyTileAt(neighbours.RandomElement(), spread);
+            }
+        }
+        else
+        {
+            spread += Grey_GooMod.settings.WorldMapGooIncrementPercentPerTick* ticks;
+        }
+    }
+
     public void ExposeData()
     {
         Scribe_Values.Look(ref tileId, "tileId");
         Scribe_Values.Look(ref planetLayerId, "planetLayerId");
         Scribe_References.Look(ref controller, "controller");
         Scribe_Values.Look(ref spread, "spread");
+        Scribe_Values.Look(ref neighboursGooed, "neighboursGooed");
     }
 }
