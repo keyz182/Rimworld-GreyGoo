@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -14,6 +13,7 @@ namespace Grey_Goo;
 public class GGWorldComponent(World world) : WorldComponent(world)
 {
     public static GGWorldComponent instance => Find.World.GetComponent<GGWorldComponent>();
+
     public static Lazy<MethodInfo> GetNextID = new(()=>AccessTools.Method(typeof(UniqueIDsManager), "GetNextID"));
     private int nextControllerId;
     public int GetNextControllerID()
@@ -26,30 +26,20 @@ public class GGWorldComponent(World world) : WorldComponent(world)
 
     public List<GreyGooController> controllers = new();
 
-    private List<GooedTile> gooedTiles;
+    private GooedTiles gooedTiles;
 
-    public List<GooedTile> GooedTiles
+    public GooedTiles GooedTiles
     {
         get
         {
-            gooedTiles ??= [];
+            gooedTiles ??= new GooedTiles(world.grid.Surface);
             return gooedTiles;
         }
     }
 
     public bool HasAlreadyStarted = false;
-    public bool HasAlreadyStarted_RunEachTime = false;
-    public Dictionary<int, float> TileGooLevel = new();
 
     public List<Tile> Tiles => Find.World.grid.Surface.Tiles;
-
-    public void Setup()
-    {
-        foreach (int idx in Enumerable.Range(0, Tiles.Count - 1).Except(TileGooLevel.Keys))
-        {
-            TileGooLevel[idx] = 0;
-        }
-    }
 
     public bool TrySpawnController(IncidentParms parms, int locationTile = -1, bool isDebug = false)
     {
@@ -89,12 +79,6 @@ public class GGWorldComponent(World world) : WorldComponent(world)
 
     public override void WorldComponentTick()
     {
-        if (!HasAlreadyStarted && Current.ProgramState == ProgramState.Playing)
-        {
-            HasAlreadyStarted = true;
-            Setup();
-        }
-
         if (Find.TickManager.TicksGame % 60 == 0)
         {
             foreach (GreyGooController greyGooController in controllers)
@@ -110,6 +94,8 @@ public class GGWorldComponent(World world) : WorldComponent(world)
                 greyGooController.LongTick();
             }
         }
+
+        GooedTiles.Tick();
     }
 
     [CanBeNull]
@@ -150,23 +136,20 @@ public class GGWorldComponent(World world) : WorldComponent(world)
     {
         Scribe_Values.Look(ref HasAlreadyStarted, "HasAlreadyStarted");
         Scribe_Values.Look(ref nextControllerId, "nextControllerId");
-        Scribe_Collections.Look(ref TileGooLevel, "pollutedTiles", LookMode.Value);
         Scribe_Collections.Look(ref controllers, "controllers", LookMode.Deep);
-        Scribe_Collections.Look(ref gooedTiles, "gooedTiles", LookMode.Deep);
+        Scribe_Deep.Look(ref gooedTiles, "gooedTiles", [world.grid.Surface]);
     }
 
     public void GooifyTileAt(int tile, float level = 0.1f)
     {
-        if (!TileGooLevel.ContainsKey(tile))
-            TileGooLevel[tile] = 0;
-        TileGooLevel[tile] = Mathf.Clamp01(TileGooLevel[tile] + level);
-
-        GGUtils.NotifyGooChanged(tile);
+        if(tile < 0 || tile >= GooedTiles.Length) return;
+        GooedTiles.GooTile(tile);
     }
 
     public float GetTileGooLevelAt(int tile)
     {
-        return TileGooLevel.TryGetValue(tile, out float value) ? value : 0f;
+        if(tile < 0 || tile >= GooedTiles.Length) return 0f;
+        return GooedTiles[tile].spread;
     }
 
     public bool CanCreateNewController(bool isDebug = false)

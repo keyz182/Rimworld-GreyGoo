@@ -94,13 +94,13 @@ public class GreyGoo_MapComponent(Map map) : MapComponent(map)
     public override void MapComponentTick()
     {
         base.MapComponentTick();
-        StartGooUpdateIfNeeded();
-        StartGooRecheckIfNeeded();
-        ProcessThingsToDamage();
-        ScheduleMortarSpawnIfNeeded();
-        TrySpawnMortar();
-        ProcessGooOrders();
-        ProcessUngooOrders();
+        // StartGooUpdateIfNeeded();
+        // StartGooRecheckIfNeeded();
+        // ProcessThingsToDamage();
+        // ScheduleMortarSpawnIfNeeded();
+        // TrySpawnMortar();
+        // ProcessGooOrders();
+        // ProcessUngooOrders();
     }
 
     public void StartGooUpdateIfNeeded()

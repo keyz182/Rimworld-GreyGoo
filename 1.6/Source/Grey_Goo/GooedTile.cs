@@ -6,6 +6,13 @@ using Verse;
 
 namespace Grey_Goo;
 
+public enum GooedStatus: int
+{
+    FullyGooed,
+    PartiallyGooed,
+    NotGooed
+}
+
 public class GooedTile: IExposable
 {
     public int tileId;
@@ -13,6 +20,8 @@ public class GooedTile: IExposable
     public GreyGooController controller;
     public float spread;
     public bool neighboursGooed = false;
+    public GooedStatus status = GooedStatus.NotGooed;
+    public int lastUpdateTick = -1;
 
     public List<PlanetTile> Neighbours
     {
@@ -41,12 +50,30 @@ public class GooedTile: IExposable
         this.spread = spread;
     }
 
-    public void Tick(int ticks = 1)
+    public void Goo(float amount)
     {
-        if (spread >= 1f)
+        if(status == GooedStatus.FullyGooed) return;
+        if(status == GooedStatus.NotGooed) status = GooedStatus.PartiallyGooed;
+
+        controller = GGWorldComponent.instance.ClosestController(tileId);
+
+        spread = Mathf.Clamp01(spread + amount);
+        GGUtils.NotifyGooChanged(tileId);
+        GGWorldComponent.instance.GooedTiles.UngooedTiles.Remove(tileId);
+        GGWorldComponent.instance.GooedTiles.ActiveTiles.Add(tileId, this);
+    }
+
+    public void Tick()
+    {
+        if(neighboursGooed) return;
+
+        int ticks = Find.TickManager.TicksGame - lastUpdateTick;
+        lastUpdateTick = Find.TickManager.TicksGame;
+
+        if (status == GooedStatus.FullyGooed)
         {
             // Do spread
-            List<PlanetTile> neighbours = Neighbours.Where(tile => !GGWorldComponent.instance.GooedTiles.Any(gt => gt.tileId == tile.tileId)).ToList();
+            List<PlanetTile> neighbours = Neighbours.Where(tile => GGWorldComponent.instance.GooedTiles.UngooedTiles.ContainsKey(tile.tileId)).ToList();
             if (neighbours.Count == 0)
             {
                 neighboursGooed = true;
@@ -60,8 +87,12 @@ public class GooedTile: IExposable
         }
         else
         {
-            spread += Grey_GooMod.settings.WorldMapGooIncrementPercentPerTick* ticks;
+            spread = Mathf.Clamp01(spread + Grey_GooMod.settings.WorldMapGooIncrementPercentPerTick* ticks);
+            controller ??= GGWorldComponent.instance.ClosestController(tileId);
         }
+
+        if(spread >= 0) status = GooedStatus.PartiallyGooed;
+        if(spread >= 1) status = GooedStatus.FullyGooed;
     }
 
     public void ExposeData()
@@ -71,5 +102,7 @@ public class GooedTile: IExposable
         Scribe_References.Look(ref controller, "controller");
         Scribe_Values.Look(ref spread, "spread");
         Scribe_Values.Look(ref neighboursGooed, "neighboursGooed");
+        Scribe_Values.Look(ref status, "status");
+        Scribe_Values.Look(ref lastUpdateTick, "lastUpdateTick");
     }
 }

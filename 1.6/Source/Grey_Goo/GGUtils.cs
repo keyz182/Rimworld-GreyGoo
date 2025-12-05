@@ -10,18 +10,12 @@ namespace Grey_Goo;
 
 public static class GGUtils
 {
-    public static Lazy<FieldInfo> worldRender_layers = new(() => AccessTools.Field(typeof(WorldRenderer), "layers"));
-
     public static void NotifyGooChanged(int tile)
     {
-        if (worldRender_layers.Value.GetValue(Find.World.renderer) is not List<WorldDrawLayer> layers)
+        foreach (WorldLayer_GreyGoo worldLayerGreyGoo in Find.World.renderer.AllDrawLayers.OfType<WorldLayer_GreyGoo>())
         {
-            return;
+            worldLayerGreyGoo.Notify_TileGooChanged(tile);
         }
-
-        WorldLayer_GreyGoo gg = layers.First(wl => wl is WorldLayer_GreyGoo) as WorldLayer_GreyGoo;
-
-        gg?.Notify_TileGooChanged(tile);
     }
 
 }

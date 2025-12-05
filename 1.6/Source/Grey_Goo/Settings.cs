@@ -22,6 +22,8 @@ public class Settings : ModSettings
     public float ChanceToMerge = 0.015f;
     public int ShamblerMergeHediffSeverityToTransform = 10;
 
+    public int TilesToProcessPerTick = 30;
+
 
     public void DoWindowContents(Rect wrect)
     {
