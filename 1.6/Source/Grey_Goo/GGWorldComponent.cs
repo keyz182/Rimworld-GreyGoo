@@ -140,12 +140,6 @@ public class GGWorldComponent(World world) : WorldComponent(world)
         Scribe_Deep.Look(ref gooedTiles, "gooedTiles", [world.grid.Surface]);
     }
 
-    public void GooifyTileAt(int tile, float level = 0.1f)
-    {
-        if(tile < 0 || tile >= GooedTiles.Length) return;
-        GooedTiles.GooTile(tile);
-    }
-
     public float GetTileGooLevelAt(int tile)
     {
         if(tile < 0 || tile >= GooedTiles.Length) return 0f;

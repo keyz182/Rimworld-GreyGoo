@@ -43,7 +43,7 @@ public class CompGooShield : CompProjectileInterceptor, IMapCellProtector
         if (parent.Map != null)
         {
             GreyGoo_MapComponent comp = parent.Map.GetComponent<GreyGoo_MapComponent>();
-            comp?.NotifyCellsProtected(this);
+            // comp?.NotifyCellsProtected(this);
             HaveMap = true;
         }
     }
@@ -52,7 +52,7 @@ public class CompGooShield : CompProjectileInterceptor, IMapCellProtector
     {
         base.PostDestroy(mode, previousMap);
         GreyGoo_MapComponent comp = previousMap.GetComponent<GreyGoo_MapComponent>();
-        comp?.NotifyCellsUnprotected(this);
+        // comp?.NotifyCellsUnprotected(this);
     }
 
 
@@ -64,7 +64,7 @@ public class CompGooShield : CompProjectileInterceptor, IMapCellProtector
         if (!HaveMap && parent.Map != null)
         {
             GreyGoo_MapComponent comp = parent.Map.GetComponent<GreyGoo_MapComponent>();
-            comp?.NotifyCellsProtected(this);
+            // comp?.NotifyCellsProtected(this);
             HaveMap = true;
         }
 
@@ -101,12 +101,12 @@ public class CompGooShield : CompProjectileInterceptor, IMapCellProtector
 
         foreach (Pawn p in pawnsWithRelevantXenotypeToDamage)
         {
-            DamageInfo dinfo = new(
-                Grey_GooDefOf.GG_Goo_GooShieldBurn,
-                Grey_GooMod.settings.GooDamageRange.RandomInRange,
-                1f);
-
-            p.TakeDamage(dinfo);
+            // DamageInfo dinfo = new(
+            //     Grey_GooDefOf.GG_Goo_GooShieldBurn,
+            //     Grey_GooMod.settings.GooDamageRange.RandomInRange,
+            //     1f);
+            //
+            // p.TakeDamage(dinfo);
         }
 
         // heal up a random pawn 10% of the time

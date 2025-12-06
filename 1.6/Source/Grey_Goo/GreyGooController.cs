@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Grey_Goo.State;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -9,26 +8,14 @@ namespace Grey_Goo;
 
 public class GreyGooController: IExposable, ILoadReferenceable
 {
-    private int _id;
-
-    public int ID
-    {
-        get => _id;
-        private set => _id = value;
-    }
-
+    private GooControllerStateMachine _stateMachine;
     public WorldObject wo;
 
-    public List<Tile> Tiles => Find.World.grid.Surface.Tiles;
-
-    public int TileIdx => Tiles.IndexOf(tile);
-    public Tile _tile;
     public Tile tile{
-        get{
-            if (_tile == null) {
-                _tile = Find.WorldGrid[wo.Tile];
-            }
-            return _tile;
+        get
+        {
+            field ??= Find.WorldGrid[wo.Tile];
+            return field;
         }
     }
 
@@ -43,16 +30,9 @@ public class GreyGooController: IExposable, ILoadReferenceable
         ID = GGWorldComponent.instance.GetNextControllerID();
     }
 
-    public List<int> _tilesOrderedByDistance;
-
-    public List<int> tilesOrderedByDistance => _tilesOrderedByDistance ??= Tiles.Where(t=>t!=tile).Where(t => !t.WaterCovered)
-                .Select(t => (t, Find.World.grid.ApproxDistanceInTiles(Tiles.IndexOf(tile), Tiles.IndexOf(t))))
-                .OrderBy(t => t.Item2)
-                .Select(t => Tiles.IndexOf(t.Item1)).ToList();
-
     public GGWorldComponent ggWorldComponent => Find.World.GetComponent<GGWorldComponent>();
 
-    public int NextTileToGooify = 0;
+    public float GooSpreadMultiplier = 1f;
 
     public void SetParent(WorldObject parent)
     {
@@ -61,7 +41,6 @@ public class GreyGooController: IExposable, ILoadReferenceable
 
     public void Setup()
     {
-
         Find.LetterStack.ReceiveLetter(
             string.Format("GG_ControllerStartTitle".Translate()),
             string.Format("GG_ControllerStartDesc".Translate(), wo.Label.Colorize(wo.Faction.Color)),
@@ -74,35 +53,60 @@ public class GreyGooController: IExposable, ILoadReferenceable
             settlement.Name = $"{settlement.Name} GG_ActiveGreyGoo".Translate().Colorize(Color.red);
         }
 
-        ggWorldComponent.GooifyTileAt(TileIdx, 1f);
-    }
+        _stateMachine ??= new GooControllerStateMachine(this);
+        if(!_stateMachine.Initialised) _stateMachine.Initialise("Offline");
 
-    public void ExposeData()
-    {
-        Scribe_Values.Look(ref NextTileToGooify, "NextTileToGooify");
-        Scribe_Collections.Look(ref _tilesOrderedByDistance, "_tilesOrderedByDistance");
+        if (!_stateMachine.TryTransitionTo("Initialising", out string reason))
+        {
+            ModLog.Warn($"Failed to transition to Initialising state: {reason}");
+        }
     }
 
     public void Tick()
     {
-        if (wo == null || wo.Destroyed || wo.def == WorldObjectDefOf.DestroyedSettlement || wo.Faction == Find.FactionManager.OfPlayer)
-        {
-            return;
-        }
 
-        for (int i = 0; i < NextTileToGooify; i++)
-        {
-            ggWorldComponent.GooifyTileAt(tilesOrderedByDistance[i], 0.01f);
-        }
     }
 
     public void LongTick()
     {
-        NextTileToGooify++;
+        if (_stateMachine.IsInState("Initialising") && _stateMachine.LastTransitionTick < Find.TickManager.TicksAbs - GenDate.TicksPerDay)
+        {
+            if (!_stateMachine.TryTransitionTo("Online", out string reason))
+            {
+                Log.Error($"Failed to transition to online state: {reason}");
+            }
+        }else if(_stateMachine.IsInState("Boosted") && _stateMachine.LastTransitionTick < Find.TickManager.TicksAbs - GenDate.TicksPerDay)
+        {
+            if (!_stateMachine.TryTransitionTo("Online", out string reason))
+            {
+                Log.Error($"Failed to transition to Online state: {reason}");
+            }
+        }
+    }
+
+    public void ExposeData()
+    {
+        Scribe_Values.Look(ref _id, "id");
+        Scribe_Deep.Look(ref _stateMachine, "stateMachine", this);
+
+        if (Scribe.mode == LoadSaveMode.PostLoadInit)
+        {
+            if(!_stateMachine.Initialised) _stateMachine.Initialise();
+        }
+    }
+
+    #region UniqueID
+    private int _id;
+
+    public int ID
+    {
+        get => _id;
+        private set => _id = value;
     }
 
     public string GetUniqueLoadID()
     {
         return "GreyGooController_" + ID;
     }
+    #endregion
 }

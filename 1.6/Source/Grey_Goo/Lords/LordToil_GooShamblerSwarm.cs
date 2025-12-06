@@ -13,7 +13,7 @@ public class LordToil_GooShamblerSwarm(IntVec3 start, IntVec3 dest) : LordToil_S
     public static readonly Lazy<FieldInfo> pathInfo = new(() => AccessTools.Field(typeof(LordToil_EntitySwarm), "path"));
     public static readonly Lazy<MethodInfo> getPathInfo = new(() => AccessTools.Method(typeof(LordToil_EntitySwarm), "GetPath"));
     public static float ChanceToMerge => Grey_GooMod.settings.ChanceToMerge;
-    public static JobDef GG_Merge_Shamblers => DefDatabase<JobDef>.GetNamed("GG_Merge_Shamblers");
+    public static JobDef GG_Merge_Shamblers => Grey_GooDefOf.GG_Merge_Shamblers;
 
     public override void LordToilTick()
     {

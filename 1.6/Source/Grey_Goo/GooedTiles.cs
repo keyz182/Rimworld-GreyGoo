@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld.Planet;
@@ -7,11 +8,11 @@ namespace Grey_Goo;
 
 public class GooedTiles: IExposable
 {
-    public List<GooedTile> gooedTiles;
+    public List<TileGooTracker> gooedTiles;
 
-    private Dictionary<int,GooedTile> ungooedTiles;
+    private Dictionary<int,TileGooTracker> ungooedTiles;
 
-    public Dictionary<int,GooedTile> UngooedTiles
+    public Dictionary<int,TileGooTracker> UngooedTiles
     {
         get
         {
@@ -20,9 +21,9 @@ public class GooedTiles: IExposable
         }
     }
 
-    private Dictionary<int,GooedTile> activeTiles;
+    private Dictionary<int,TileGooTracker> activeTiles;
 
-    public Dictionary<int,GooedTile> ActiveTiles
+    public Dictionary<int,TileGooTracker> ActiveTiles
     {
         get
         {
@@ -43,25 +44,42 @@ public class GooedTiles: IExposable
 
     public GooedTiles(PlanetLayer layer)
     {
-        gooedTiles = layer.Tiles.Select(tile => new GooedTile(tile.tile.tileId, layer.LayerID, null, 0)).ToList();
+        gooedTiles = layer.Tiles.Select(tile => new TileGooTracker(tile.tile.tileId, layer.LayerID, null, 0)).ToList();
     }
 
     public void GooTile(int tileId, float? amount = null)
     {
-        amount ??= Grey_GooMod.settings.WorldMapGooIncrementPercentPerTick;
+        if(tileId < 0 || tileId >= Length) return;
+
+        amount ??= Grey_GooMod.settings.GooIncreasePerTick;
         gooedTiles[tileId].Goo(amount.Value);
     }
 
     public int Length => gooedTiles.Count;
 
-    public GooedTile this[int tileId] => gooedTiles[tileId];
+    public TileGooTracker this[int tileId] => gooedTiles[tileId];
 
     public void Tick()
     {
-        foreach (GooedTile tile in ActiveTiles.Values.TakeRandomDistinct(Grey_GooMod.settings.TilesToProcessPerTick))
+        GenThreading.ParallelForEach(ActiveTiles.Values.TakeRandomDistinct(Grey_GooMod.settings.TilesToProcessPerTick), tile =>
         {
-            tile.Tick();
+            tile.Tick(this);
+        });
+
+        int gooedCount = 0;
+        while(_tilesToGoo.TryDequeue(out int tileId))
+        {
+            gooedCount++;
+            gooedTiles[tileId].Goo(0.001f);
+            if(gooedCount > Grey_GooMod.settings.TilesToProcessPerTick) break;
         }
+    }
+
+    private ConcurrentQueue<int> _tilesToGoo = new();
+
+    public void QueueTileForGoo(int tileId)
+    {
+        _tilesToGoo.Enqueue(tileId);
     }
 
     public void ExposeData()

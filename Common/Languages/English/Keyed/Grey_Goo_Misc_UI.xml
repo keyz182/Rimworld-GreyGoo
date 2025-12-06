@@ -26,6 +26,10 @@
     <GG_Settings_GooMortarSpawnTickRange>Tick range for Grey Goo Mortar Spawns {0}</GG_Settings_GooMortarSpawnTickRange>
     <GG_InfectOnGooTouch>Infect pawns on touching goo</GG_InfectOnGooTouch>
 
+    <GG_Setting_DaysToFullyGooTile>Days for a tile to reach fully gooed (only effects new goo tiles after changing)</GG_Setting_DaysToFullyGooTile>
+    <GG_Setting_ChancePerHourToSpreadToNewTileWhenFullyGooed>Chance per hour for goo to spread from a fully gooed tile to a neighbour</GG_Setting_ChancePerHourToSpreadToNewTileWhenFullyGooed>
+    <GG_Setting_ChancePerDayToSpreadToNewTileWhenNotFullyGooed>Chance per day for goo to spread from a not-fully gooed tile to a neighbour</GG_Setting_ChancePerDayToSpreadToNewTileWhenNotFullyGooed>
+
     <GG_GooControllerSpawned>A new grey goo controller has formed!</GG_GooControllerSpawned>
     <GG_TileInspectString>Goo conversion level: {0}%</GG_TileInspectString>
 

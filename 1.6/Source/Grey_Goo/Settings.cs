@@ -1,35 +1,41 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Grey_Goo;
 
 public class Settings : ModSettings
 {
-    public float WorldMapGooIncrementPercentPerTick = 0.01f;
-    public float GooSpreadChance = 0.01f;
-    public int MapGooReevaluateFrequency = 6000;
-    public int MapGooUpdateFrequency = 600;
-    public float ChanceToSpreadGooToCell = 0.01f;
-    public float ChanceForGooToDamagePercent = 0.001f;
-    public FloatRange GooDamageRange = new FloatRange(0f,4f);
-    public bool InfectOnGooTouch = false;
-    public Vector2 scrollPosition = Vector2.zero;
+    public FloatRange DaysToFullyGooTile = new(1f, 5f);
+    public float GooIncreasePerTick => DaysToFullyGooTile.RandomInRange / GenDate.TicksPerDay;
 
-    public IntRange GooMortarSpawnTickRange = new IntRange(18000, 54000);
+    public float ChancePerHourToSpreadToNewTileWhenFullyGooed = 1f;
+    public float ChancePerDayToSpreadToNewTileWhenNotFullyGooed = 0.5f;
 
+
+
+    // public int MapGooReevaluateFrequency = 6000;
+    // public int MapGooUpdateFrequency = 600;
+    // public float ChanceToSpreadGooToCell = 0.01f;
+    // public float ChanceForGooToDamagePercent = 0.001f;
+    // public FloatRange GooDamageRange = new FloatRange(0f,4f);
+    // public bool InfectOnGooTouch = false;
+    // public IntRange GooMortarSpawnTickRange = new IntRange(18000, 54000);
     public int MaxShamblersOnMap = 40;
-
     public float ChanceToMerge = 0.015f;
     public int ShamblerMergeHediffSeverityToTransform = 10;
-
     public int TilesToProcessPerTick = 30;
+
+    public Vector2 scrollPosition = Vector2.zero;
+
+
+    private float scrollViewHeight = 702f;
 
 
     public void DoWindowContents(Rect wrect)
     {
-        float scrollViewHeigh = 702f;
 
-        Rect viewRect = new Rect(0f, 0f, wrect.width- 20, scrollViewHeigh);
+        Rect viewRect = new Rect(0f, 0f, wrect.width- 20, scrollViewHeight);
         scrollPosition = GUI.BeginScrollView(new Rect(0, 50, wrect.width, wrect.height - 50), scrollPosition, viewRect);
 
         Listing_Standard options = new();
@@ -37,37 +43,48 @@ public class Settings : ModSettings
         options.Begin(viewRect);
         try
         {
-            WorldMapGooIncrementPercentPerTick = Widgets.HorizontalSlider(options.GetRect(40f), WorldMapGooIncrementPercentPerTick, 0f, 0.01f,
-                label: "GG_Setting_GooSpreadIncrement".Translate(WorldMapGooIncrementPercentPerTick.ToString("0.000")));
+            Widgets.FloatRange(options.GetRect(40), 1, ref DaysToFullyGooTile, 0.5f, 30f, "GG_Setting_DaysToFullyGooTile");
             options.Gap();
 
-            GooSpreadChance = Widgets.HorizontalSlider(options.GetRect(40f), GooSpreadChance, 0f, 10f,
-                label: "GG_Setting_GooSpreadChance".Translate(GooSpreadChance.ToString("0.000")));
+            ChancePerHourToSpreadToNewTileWhenFullyGooed = Widgets.HorizontalSlider(options.GetRect(40f), ChancePerHourToSpreadToNewTileWhenFullyGooed, 0f, 1f,
+                label: "GG_Setting_ChancePerHourToSpreadToNewTileWhenFullyGooed".Translate(ChancePerHourToSpreadToNewTileWhenFullyGooed.ToString("0.000")));
             options.Gap();
 
-            options.Label("GG_Setting_MapGooUpdateFrequency".Translate(MapGooUpdateFrequency));
-            options.IntAdjuster(ref MapGooUpdateFrequency, 1);
-
+            ChancePerDayToSpreadToNewTileWhenNotFullyGooed = Widgets.HorizontalSlider(options.GetRect(40f), ChancePerDayToSpreadToNewTileWhenNotFullyGooed, 0f, 1f,
+                label: "GG_Setting_ChancePerDayToSpreadToNewTileWhenNotFullyGooed".Translate(ChancePerDayToSpreadToNewTileWhenNotFullyGooed.ToString("0.000")));
             options.Gap();
 
-            ChanceToSpreadGooToCell = Widgets.HorizontalSlider(options.GetRect(40f), ChanceToSpreadGooToCell, 0f, 0.25f,
-                label: "GG_Setting_ChanceToSpreadGooToCell".Translate(ChanceToSpreadGooToCell.ToString("0.000")));
-            options.Gap();
+            // WorldMapGooIncrementPercentPerTick = Widgets.HorizontalSlider(options.GetRect(40f), WorldMapGooIncrementPercentPerTick, 0f, 0.01f,
+            //     label: "GG_Setting_GooSpreadIncrement".Translate(WorldMapGooIncrementPercentPerTick.ToString("0.000")));
+            // options.Gap();
+            //
+            // GooSpreadChance = Widgets.HorizontalSlider(options.GetRect(40f), GooSpreadChance, 0f, 10f,
+            //     label: "GG_Setting_GooSpreadChance".Translate(GooSpreadChance.ToString("0.000")));
+            // options.Gap();
 
-            ChanceForGooToDamagePercent = Widgets.HorizontalSlider(options.GetRect(40f), ChanceForGooToDamagePercent, 0f, 0.1f,
-                label: "GG_Setting_ChanceForGooToDamagePercent".Translate(ChanceForGooToDamagePercent.ToString("0.000")));
-            options.Gap();
+            // options.Label("GG_Setting_MapGooUpdateFrequency".Translate(MapGooUpdateFrequency));
+            // options.IntAdjuster(ref MapGooUpdateFrequency, 1);
+            //
+            // options.Gap();
 
-            Widgets.FloatRange(options.GetRect(40), 1, ref GooDamageRange, 0f, 10f, "GG_Setting_GooDamageRange");
-            options.Gap();
+            // ChanceToSpreadGooToCell = Widgets.HorizontalSlider(options.GetRect(40f), ChanceToSpreadGooToCell, 0f, 0.25f,
+            //     label: "GG_Setting_ChanceToSpreadGooToCell".Translate(ChanceToSpreadGooToCell.ToString("0.000")));
+            // options.Gap();
+            //
+            // ChanceForGooToDamagePercent = Widgets.HorizontalSlider(options.GetRect(40f), ChanceForGooToDamagePercent, 0f, 0.1f,
+            //     label: "GG_Setting_ChanceForGooToDamagePercent".Translate(ChanceForGooToDamagePercent.ToString("0.000")));
+            // options.Gap();
+            //
+            // Widgets.FloatRange(options.GetRect(40), 1, ref GooDamageRange, 0f, 10f, "GG_Setting_GooDamageRange");
+            // options.Gap();
+            //
+            // options.CheckboxLabeled("GG_InfectOnGooTouch".Translate(), ref InfectOnGooTouch);
+            // options.Gap();
 
-            options.CheckboxLabeled("GG_InfectOnGooTouch".Translate(), ref InfectOnGooTouch);
-            options.Gap();
-
-            options.Label("GG_Setting_MapGooReevaluateFrequency".Translate(MapGooReevaluateFrequency));
-            options.IntAdjuster(ref MapGooReevaluateFrequency, 60);
-
-            options.Gap();
+            // options.Label("GG_Setting_MapGooReevaluateFrequency".Translate(MapGooReevaluateFrequency));
+            // options.IntAdjuster(ref MapGooReevaluateFrequency, 60);
+            //
+            // options.Gap();
 
             options.Label("GG_Settings_ChanceToMerge".Translate((ChanceToMerge * 100f).ToString("0.0000")));
             ChanceToMerge = options.Slider(ChanceToMerge, 0.0001f, 1f);
@@ -79,29 +96,34 @@ public class Settings : ModSettings
             options.IntAdjuster(ref MaxShamblersOnMap, 1);
 
             options.Gap();
-            Widgets.IntRange(options.GetRect(40), 2, ref GooMortarSpawnTickRange, 0, 200000, "GG_Settings_GooMortarSpawnTickRange");
-            options.Gap();
+            // Widgets.IntRange(options.GetRect(40), 2, ref GooMortarSpawnTickRange, 0, 200000, "GG_Settings_GooMortarSpawnTickRange");
+            // options.Gap();
         }
         finally
         {
             options.End();
             GUI.EndScrollView();
+            scrollViewHeight = options.CurHeight;
         }
     }
 
     public override void ExposeData()
     {
-        Scribe_Values.Look(ref WorldMapGooIncrementPercentPerTick, "WorldMapGooIncrementPercentPerTick", 0.01f);
-        Scribe_Values.Look(ref GooSpreadChance, "GooSpreadChance", 1f);
-        Scribe_Values.Look(ref MapGooUpdateFrequency, "MapGooUpdateFrequency", 600);
-        Scribe_Values.Look(ref ChanceToSpreadGooToCell, "ChanceToSpreadGooToCell", 0.01f);
-        Scribe_Values.Look(ref ChanceForGooToDamagePercent, "ChanceForGooToDamagePercent", 0.001f);
-        Scribe_Values.Look(ref GooDamageRange, "GooDamageRange", new FloatRange(0f, 4f));
-        Scribe_Values.Look(ref InfectOnGooTouch, "InfectOnGooTouch", false);
-        Scribe_Values.Look(ref MapGooReevaluateFrequency, "MapGooReevaluateFrequency", 6000);
-        Scribe_Values.Look(ref ChanceToMerge, "ChanceToMerge", 0.015f);
+        Scribe_Values.Look(ref DaysToFullyGooTile, "DaysToFullyGooTile", new FloatRange(1f, 5f));
+        Scribe_Values.Look(ref ChancePerHourToSpreadToNewTileWhenFullyGooed, "ChancePerHourToSpreadToNewTileWhenFullyGooed", 1f);
+        Scribe_Values.Look(ref ChancePerDayToSpreadToNewTileWhenNotFullyGooed, "ChancePerDayToSpreadToNewTileWhenNotFullyGooed", 0.5f);
+        // Scribe_Values.Look(ref WorldMapGooIncrementPercentPerTick, "WorldMapGooIncrementPercentPerTick", 0.01f);
+        // Scribe_Values.Look(ref GooSpreadChance, "GooSpreadChance", 1f);
+        // Scribe_Values.Look(ref MapGooUpdateFrequency, "MapGooUpdateFrequency", 600);
+        // Scribe_Values.Look(ref MapGooReevaluateFrequency, "MapGooReevaluateFrequency", 6000);
+
+        // Scribe_Values.Look(ref ChanceToSpreadGooToCell, "ChanceToSpreadGooToCell", 0.01f);
+        // Scribe_Values.Look(ref ChanceForGooToDamagePercent, "ChanceForGooToDamagePercent", 0.001f);
+        // Scribe_Values.Look(ref GooDamageRange, "GooDamageRange", new FloatRange(0f, 4f));
+        // Scribe_Values.Look(ref InfectOnGooTouch, "InfectOnGooTouch", false);
+        // Scribe_Values.Look(ref ChanceToMerge, "ChanceToMerge", 0.015f);
         Scribe_Values.Look(ref ShamblerMergeHediffSeverityToTransform, "ShamblerMergeHediffSeverityToTransform", 10);
         Scribe_Values.Look(ref MaxShamblersOnMap, "MaxShamblersOnMap", 40);
-        Scribe_Values.Look(ref GooMortarSpawnTickRange, "GooMortarSpawnTickRange",  new IntRange(18000, 54000));
+        // Scribe_Values.Look(ref GooMortarSpawnTickRange, "GooMortarSpawnTickRange",  new IntRange(18000, 54000));
     }
 }

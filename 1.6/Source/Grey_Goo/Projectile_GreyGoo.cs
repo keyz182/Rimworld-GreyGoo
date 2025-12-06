@@ -15,7 +15,7 @@ public class Projectile_GreyGoo: Projectile_Explosive
         base.Explode();
         foreach (IntVec3 cell in CellsToGo)
         {
-            map.GetComponent<GreyGoo_MapComponent>()?.GooTileAt(cell);
+            // map.GetComponent<GreyGoo_MapComponent>()?.GooTileAt(cell);
         }
     }
 }
