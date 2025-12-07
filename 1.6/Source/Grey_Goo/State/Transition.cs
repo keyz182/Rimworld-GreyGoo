@@ -1,25 +1,41 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Grey_Goo;
 
 namespace Grey_Goo.State;
 
-public sealed class Transition<T>(T from, T to, TransitionValidator<T> validator = null)
-    where T : State
+/// <summary>
+/// Represents a directed transition between two concrete states of the state machine.
+/// </summary>
+/// <typeparam name="E">Enum that identifies states.</typeparam>
+/// <typeparam name="T">Concrete state type.</typeparam>
+public sealed class Transition<E, T>
+    where E : struct, System.Enum
+    where T : State<E, T>, IIdentifiableState<E>
 {
-    public T From = from;
-    public T To = to;
-    [CanBeNull] public TransitionValidator<T> validator = validator;
+    public readonly T From;
+    public readonly T To;
+    public TransitionGuard<E, T> Guard { get; }
 
-    public bool CanApply(StateMachine<T> stateMachine, out string reason)
+    public Transition(T from, T to, TransitionGuard<E, T> guard = null)
+    {
+        From = from;
+        To = to;
+        Guard = guard;
+    }
+
+    public bool CanApply(StateMachine<E, T> stateMachine, out string reason)
     {
         reason = string.Empty;
         if (!EqualityComparer<T>.Default.Equals(stateMachine.State, From)) return false;
-        return validator?.Invoke(stateMachine, From, To, out reason) ?? true;
+        return Guard?.Invoke(stateMachine, From, To, out reason) ?? true;
     }
 
-    public void Apply(StateMachine<T> stateMachine)
+    public void Apply(StateMachine<E, T> stateMachine)
     {
         T from = stateMachine.State;
+        // Log self-transition for debugging purposes
+        if (EqualityComparer<T>.Default.Equals(from, To))
+            ModLog.Debug($"[FSM] Self-transition detected: {typeof(E).Name}:{from} -> {To} at tick {Verse.Find.TickManager.TicksGame}");
         // Exit current state
         from.OnExit(stateMachine, To);
         // Enter new state
