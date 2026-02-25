@@ -51,7 +51,7 @@ public class GooedTiles: IExposable
     {
         if(tileId < 0 || tileId >= Length) return;
 
-        amount ??= Grey_GooMod.settings.GooIncreasePerTick;
+        amount ??= Grey_GooMod.settings.SpreadPercentagePerIncrease;
         gooedTiles[tileId].Goo(amount.Value);
     }
 

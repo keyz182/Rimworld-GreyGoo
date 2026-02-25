@@ -6,12 +6,10 @@ namespace Grey_Goo;
 
 public class Settings : ModSettings
 {
-    public FloatRange DaysToFullyGooTile = new(1f, 5f);
-    public float GooIncreasePerTick => DaysToFullyGooTile.RandomInRange / GenDate.TicksPerDay;
-
-    public float ChancePerHourToSpreadToNewTileWhenFullyGooed = 1f;
-    public float ChancePerDayToSpreadToNewTileWhenNotFullyGooed = 0.5f;
-
+    public float ChanceToSpreadToNewTilePerHour = 0.05f;
+    public float ChanceToSpreadToMultipleTiles = 0.05f;
+    public float ChanceToIncreaseGooPerHour = 0.75f;
+    public float SpreadPercentagePerIncrease = 0.05f;
 
 
     // public int MapGooReevaluateFrequency = 6000;
@@ -43,16 +41,6 @@ public class Settings : ModSettings
         options.Begin(viewRect);
         try
         {
-            Widgets.FloatRange(options.GetRect(40), 1, ref DaysToFullyGooTile, 0.5f, 30f, "GG_Setting_DaysToFullyGooTile");
-            options.Gap();
-
-            ChancePerHourToSpreadToNewTileWhenFullyGooed = Widgets.HorizontalSlider(options.GetRect(40f), ChancePerHourToSpreadToNewTileWhenFullyGooed, 0f, 1f,
-                label: "GG_Setting_ChancePerHourToSpreadToNewTileWhenFullyGooed".Translate(ChancePerHourToSpreadToNewTileWhenFullyGooed.ToString("0.000")));
-            options.Gap();
-
-            ChancePerDayToSpreadToNewTileWhenNotFullyGooed = Widgets.HorizontalSlider(options.GetRect(40f), ChancePerDayToSpreadToNewTileWhenNotFullyGooed, 0f, 1f,
-                label: "GG_Setting_ChancePerDayToSpreadToNewTileWhenNotFullyGooed".Translate(ChancePerDayToSpreadToNewTileWhenNotFullyGooed.ToString("0.000")));
-            options.Gap();
 
             // WorldMapGooIncrementPercentPerTick = Widgets.HorizontalSlider(options.GetRect(40f), WorldMapGooIncrementPercentPerTick, 0f, 0.01f,
             //     label: "GG_Setting_GooSpreadIncrement".Translate(WorldMapGooIncrementPercentPerTick.ToString("0.000")));
@@ -109,9 +97,11 @@ public class Settings : ModSettings
 
     public override void ExposeData()
     {
-        Scribe_Values.Look(ref DaysToFullyGooTile, "DaysToFullyGooTile", new FloatRange(1f, 5f));
-        Scribe_Values.Look(ref ChancePerHourToSpreadToNewTileWhenFullyGooed, "ChancePerHourToSpreadToNewTileWhenFullyGooed", 1f);
-        Scribe_Values.Look(ref ChancePerDayToSpreadToNewTileWhenNotFullyGooed, "ChancePerDayToSpreadToNewTileWhenNotFullyGooed", 0.5f);
+        Scribe_Values.Look(ref ChanceToSpreadToNewTilePerHour, "ChanceToSpreadToNewTilePerHour", 0.05f);
+        Scribe_Values.Look(ref ChanceToSpreadToMultipleTiles, "ChanceToSpreadToMultipleTiles", 0.05f);
+        Scribe_Values.Look(ref ChanceToIncreaseGooPerHour, "ChanceToIncreaseGooPerHour", 0.2f);
+        Scribe_Values.Look(ref SpreadPercentagePerIncrease, "SpreadPercentagePerIncrease", 0.05f);
+
         // Scribe_Values.Look(ref WorldMapGooIncrementPercentPerTick, "WorldMapGooIncrementPercentPerTick", 0.01f);
         // Scribe_Values.Look(ref GooSpreadChance, "GooSpreadChance", 1f);
         // Scribe_Values.Look(ref MapGooUpdateFrequency, "MapGooUpdateFrequency", 600);
@@ -125,5 +115,7 @@ public class Settings : ModSettings
         Scribe_Values.Look(ref ShamblerMergeHediffSeverityToTransform, "ShamblerMergeHediffSeverityToTransform", 10);
         Scribe_Values.Look(ref MaxShamblersOnMap, "MaxShamblersOnMap", 40);
         // Scribe_Values.Look(ref GooMortarSpawnTickRange, "GooMortarSpawnTickRange",  new IntRange(18000, 54000));
+
+
     }
 }

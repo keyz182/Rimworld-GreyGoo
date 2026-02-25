@@ -72,7 +72,7 @@ public class GooControllerStateMachine(GreyGooController controller) : StateMach
         );
 
         // Graph: Offline -> Initialising (guarded; placeholder for future checks)
-        AddTransition(offline, initialising, (machine, from, to, out reason) =>
+        AddTransition(offline, initialising, (StateMachine<GooControllerStates, GooControllerState> machine, GooControllerState from, GooControllerState to, out string reason) =>
         {
             //TODO: Check if there's any game-states or anything preventing us coming online.
             reason = "";
@@ -82,7 +82,7 @@ public class GooControllerStateMachine(GreyGooController controller) : StateMach
         AddTransition(initialising, online);
 
         // Online -> Boosted (guarded; placeholder for future checks)
-        AddTransition(online, boosted, (machine, from, to, out reason) =>
+        AddTransition(online, boosted, (StateMachine<GooControllerStates, GooControllerState> machine, GooControllerState from, GooControllerState to, out string reason) =>
         {
             //TODO: Check if there's any game-states or anything preventing us boosting.
             reason = "";

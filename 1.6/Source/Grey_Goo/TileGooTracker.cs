@@ -8,7 +8,7 @@ using Verse;
 
 namespace Grey_Goo;
 
-public enum GooedStatus: int
+public enum GooedStatus: byte
 {
     FullyGooed,
     PartiallyGooed,
@@ -26,20 +26,6 @@ public class TileGooTracker: IExposable
     public bool neighboursGooed = false;
     public GooedStatus status = GooedStatus.NotGooed;
     public int lastUpdateTick = -1;
-    private float spreadPerTick = -1;
-
-    public float SpreadPerTick
-    {
-        get
-        {
-            if (Mathf.Approximately(spreadPerTick, 0) || spreadPerTick < 0)
-            {
-                SpreadPerTick = Grey_GooMod.settings.DaysToFullyGooTile.RandomInRange / GenDate.TicksPerDay;
-            }
-            return spreadPerTick;
-        }
-        set => spreadPerTick = value;
-    }
 
     public List<PlanetTile> Neighbours
     {
@@ -112,29 +98,38 @@ public class TileGooTracker: IExposable
             }
             else
             {
-                if (Rand.Chance((Grey_GooMod.settings.ChancePerHourToSpreadToNewTileWhenFullyGooed / GenDate.TicksPerHour) * ticks))
-                {
-                    tiles.QueueTileForGoo(neighbours.RandomElement().tileId);
-                }
+                DoSpread(ticks, tiles, ref neighbours);
             }
         }
         else
         {
-            float mul = controller?.GooSpreadMultiplier ?? 1f;
-            spread = Mathf.Clamp01(spread + (SpreadPerTick * ticks * mul));
+            float chanceToIncrease = (Grey_GooMod.settings.ChanceToIncreaseGooPerHour / GenDate.TicksPerHour) * ticks;
 
-            if (neighbours.Count > 0)
+            if (Rand.Chance(chanceToIncrease))
             {
-                if (Rand.Chance((Grey_GooMod.settings.ChancePerDayToSpreadToNewTileWhenNotFullyGooed / GenDate.TicksPerDay) * ticks))
-                {
-                    tiles.QueueTileForGoo(neighbours.RandomElement().tileId);
-                }
+                spread = Mathf.Clamp01(spread+Grey_GooMod.settings.SpreadPercentagePerIncrease);
+                DoSpread(ticks, tiles, ref neighbours);
             }
         }
 
         if (spread >= 1f) status = GooedStatus.FullyGooed;
         else if (spread > 0f) status = GooedStatus.PartiallyGooed;
         else status = GooedStatus.NotGooed;
+    }
+
+    public void DoSpread(int ticks, GooedTiles tiles, ref List<PlanetTile> neighbours)
+    {
+        if (Rand.Chance((Grey_GooMod.settings.ChanceToSpreadToNewTilePerHour / GenDate.TicksPerHour) * ticks))
+        {
+            if (Rand.Chance(Grey_GooMod.settings.ChanceToSpreadToMultipleTiles))
+            {
+                neighbours.TakeRandomDistinct(Rand.Range(1, neighbours.Count)).ForEach(tile => tiles.QueueTileForGoo(tile.tileId));
+            }
+            else
+            {
+                tiles.QueueTileForGoo(neighbours.RandomElement().tileId);
+            }
+        }
     }
 
     public void ExposeData()
@@ -146,6 +141,5 @@ public class TileGooTracker: IExposable
         Scribe_Values.Look(ref neighboursGooed, "neighboursGooed");
         Scribe_Values.Look(ref status, "status");
         Scribe_Values.Look(ref lastUpdateTick, "lastUpdateTick");
-        Scribe_Values.Look(ref spreadPerTick, "spreadPerTick");
     }
 }
